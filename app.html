@@ -13,7 +13,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/js/all.min.js" defer></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="assets/javascripts/qrcode.min.js"></script>
   <title>TaxiOMeter</title>
 </head>
 <body>
@@ -21,12 +22,13 @@
   <div class="onboarding-container">
     <div class="onboarding-step active">
       <div class="onboarding-icon">
-        <i class="fas fa-taxi"></i>
+        <img src="assets/images/welcome.svg" alt="Welcome" width="120" height="120">
       </div>
       <h1 class="onboarding-title" data-i18n="welcome">Willkommen</h1>
       <p class="onboarding-description" data-i18n="welcomeDesc">TaxiOMeter hilft Ihnen bei der präzisen Fahrpreisberechnung mit GPS-Tracking.</p>
       <div class="progress-dots">
         <div class="dot active"></div>
+        <div class="dot"></div>
         <div class="dot"></div>
         <div class="dot"></div>
       </div>
@@ -35,11 +37,27 @@
     
     <div class="onboarding-step">
       <div class="onboarding-icon">
-        <i class="fas fa-location-dot"></i>
+        <img src="assets/images/personal_data.svg" alt="Privacy" width="120" height="120">
+      </div>
+      <h1 class="onboarding-title" data-i18n="privacy">Datenschutz</h1>
+      <p class="onboarding-description" data-i18n="privacyDesc">Ihre Privatsphäre ist uns wichtig. Alle Daten werden nur lokal auf Ihrem Gerät gespeichert. Es werden keine Daten an externe Server übertragen oder gesammelt.</p>
+      <div class="progress-dots">
+        <div class="dot active"></div>
+        <div class="dot active"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <button class="btn" id="onboarding-next-2" data-i18n="next">Weiter</button>
+    </div>
+    
+    <div class="onboarding-step">
+      <div class="onboarding-icon">
+        <img src="assets/images/gps.svg" alt="Location" width="120" height="120">
       </div>
       <h1 class="onboarding-title" data-i18n="location">Standort</h1>
       <p class="onboarding-description" data-i18n="locationDesc">Für genaue Berechnungen benötigen wir Zugriff auf Ihren Standort.</p>
       <div class="progress-dots">
+        <div class="dot active"></div>
         <div class="dot active"></div>
         <div class="dot active"></div>
         <div class="dot"></div>
@@ -49,11 +67,15 @@
     
     <div class="onboarding-step">
       <div class="onboarding-icon">
-        <i class="fas fa-check-circle"></i>
+        <img src="assets/images/earn.svg" alt="Setup" width="120" height="120">
       </div>
-      <h1 class="onboarding-title" data-i18n="ready">Bereit</h1>
-      <p class="onboarding-description" data-i18n="readyDesc">Alles ist eingerichtet! Sie können jetzt Ihre erste Fahrt starten.</p>
+      <h1 class="onboarding-title" data-i18n="setup">Einrichtung</h1>
+      <p class="onboarding-description" data-i18n="setupDesc">Bitte geben Sie Ihren Namen ein. Dieser erscheint auf den Quittungen für Ihre Fahrgäste.</p>
+      <div class="input-group">
+        <input type="text" id="driver-name" placeholder="Ihr Name" required>
+      </div>
       <div class="progress-dots">
+        <div class="dot active"></div>
         <div class="dot active"></div>
         <div class="dot active"></div>
         <div class="dot active"></div>
@@ -85,7 +107,8 @@
           
           <div class="input-group">
             <label for="destination" data-i18n="destination">Zieladresse</label>
-            <input type="text" id="destination" data-i18n="destination">
+            <input type="text" id="destination" data-i18n="destination" autocomplete="off">
+            <div id="address-suggestions" class="address-suggestions"></div>
           </div>
           
           <div class="input-group">
@@ -138,25 +161,81 @@
       
       <!-- Settings Screen -->
       <div class="screen" id="settings">
-        <div class="card">
-          <h2 data-i18n="settings">Einstellungen</h2>
-          
-          <div class="input-group">
-            <label for="language-select" data-i18n="language">Sprache</label>
-            <select id="language-select">
-              <option value="de">Deutsch</option>
-              <option value="en">English</option>
-            </select>
+        <div class="settings-tabs">
+          <div class="tab-buttons">
+            <button class="tab-btn active" data-tab="general">Allgemein</button>
+            <button class="tab-btn" data-tab="libraries">Bibliotheken</button>
           </div>
           
-          <div class="input-group">
-            <label for="price-per-km" data-i18n="pricePerKm">Preis pro Kilometer</label>
-            <input type="number" id="price-per-km" min="0" step="0.01" value="1.50">
+          <div class="tab-content active" id="general-tab">
+            <div class="card">
+              <h2 data-i18n="settings">Einstellungen</h2>
+              
+              <div class="input-group">
+                <label for="language-select" data-i18n="language">Sprache</label>
+                <select id="language-select">
+                  <option value="de">Deutsch</option>
+                  <option value="en">English</option>
+                </select>
+              </div>
+              
+              <div class="input-group">
+                <label for="price-per-km" data-i18n="pricePerKm">Preis pro Kilometer</label>
+                <input type="number" id="price-per-km" min="0" step="0.01" value="1.50">
+              </div>
+              
+              <div class="input-group">
+                <label for="base-fare" data-i18n="baseFare">Grundgebühr</label>
+                <input type="number" id="base-fare" min="0" step="0.01" value="3.00">
+              </div>
+              
+              <div class="input-group">
+                <label for="driver-name-setting" data-i18n="driverName">Fahrername</label>
+                <input type="text" id="driver-name-setting" placeholder="Ihr Name">
+              </div>
+            </div>
           </div>
           
-          <div class="input-group">
-            <label for="base-fare" data-i18n="baseFare">Grundgebühr</label>
-            <input type="number" id="base-fare" min="0" step="0.01" value="3.00">
+          <div class="tab-content" id="libraries-tab">
+            <div class="card">
+              <h2>Verwendete Bibliotheken</h2>
+              <div class="libraries-list">
+                <div class="library-item">
+                  <h3>Leaflet.js</h3>
+                  <p>Version: 1.9.4</p>
+                  <p>Interactive maps for the web</p>
+                  <a href="https://leafletjs.com/" target="_blank">leafletjs.com</a>
+                </div>
+                
+                <div class="library-item">
+                  <h3>QRCode.js</h3>
+                  <p>Version: Local</p>
+                  <p>QR code generation library</p>
+                  <a href="https://davidshimjs.github.io/qrcodejs/" target="_blank">davidshimjs.github.io/qrcodejs</a>
+                </div>
+                
+                <div class="library-item">
+                  <h3>jQuery</h3>
+                  <p>Version: 3.7.1</p>
+                  <p>Fast, small, and feature-rich JavaScript library</p>
+                  <a href="https://jquery.com/" target="_blank">jquery.com</a>
+                </div>
+                
+                <div class="library-item">
+                  <h3>Font Awesome</h3>
+                  <p>Version: 7.0.1</p>
+                  <p>Icon library and toolkit</p>
+                  <a href="https://fontawesome.com/" target="_blank">fontawesome.com</a>
+                </div>
+                
+                <div class="library-item">
+                  <h3>OpenStreetMap Nominatim</h3>
+                  <p>Address geocoding service</p>
+                  <p>Free address search API</p>
+                  <a href="https://nominatim.openstreetmap.org/" target="_blank">nominatim.openstreetmap.org</a>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

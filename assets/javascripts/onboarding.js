@@ -40,6 +40,14 @@ export const Onboarding = (() => {
   }
   
   function complete() {
+    // Save driver name
+    const driverName = document.getElementById('driver-name').value.trim();
+    if (!driverName) {
+      alert('Bitte geben Sie Ihren Namen ein.');
+      return;
+    }
+    
+    localStorage.setItem('driver_name', driverName);
     localStorage.setItem('taxi_onboarding_complete', 'true');
     document.querySelector('.onboarding-container').style.display = 'none';
     

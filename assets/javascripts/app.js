@@ -8,6 +8,7 @@ import { MapModule } from './map.js';
 import { Router } from './router.js';
 import { QRModule } from './qr.js';
 import { Onboarding } from './onboarding.js';
+import { AddressAutocomplete } from './autocomplete.js';
 
 class TaxiOMeterApp {
   constructor() {
@@ -39,6 +40,7 @@ class TaxiOMeterApp {
   setupOnboarding() {
     // Set up onboarding event listeners
     document.getElementById('onboarding-next-1').onclick = () => Onboarding.nextStep();
+    document.getElementById('onboarding-next-2').onclick = () => Onboarding.nextStep();
     document.getElementById('onboarding-location').onclick = () => Onboarding.requestLocationPermission();
     document.getElementById('onboarding-complete').onclick = () => Onboarding.complete();
   }
@@ -50,6 +52,9 @@ class TaxiOMeterApp {
     // Initialize app components
     this.setupEventListeners();
     this.initGPS();
+    
+    // Initialize address autocomplete
+    AddressAutocomplete.init();
     
     // Update Fare rates
     Fare.setRates({
@@ -73,6 +78,40 @@ class TaxiOMeterApp {
     document.getElementById('language-select').onchange = (e) => this.updateLanguage(e.target.value);
     document.getElementById('price-per-km').onchange = (e) => this.updatePricePerKm(e.target.value);
     document.getElementById('base-fare').onchange = (e) => this.updateBaseFare(e.target.value);
+    document.getElementById('driver-name-setting').onchange = (e) => this.updateDriverName(e.target.value);
+    
+    // Settings tabs
+    this.setupSettingsTabs();
+  }
+  
+  setupSettingsTabs() {
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+    
+    tabButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const targetTab = button.dataset.tab;
+        
+        // Remove active class from all buttons and contents
+        tabButtons.forEach(btn => btn.classList.remove('active'));
+        tabContents.forEach(content => content.classList.remove('active'));
+        
+        // Add active class to clicked button and corresponding content
+        button.classList.add('active');
+        document.getElementById(`${targetTab}-tab`).classList.add('active');
+      });
+    });
+    
+    // Load current driver name in settings
+    const driverNameInput = document.getElementById('driver-name-setting');
+    const currentDriverName = localStorage.getItem('driver_name');
+    if (currentDriverName && driverNameInput) {
+      driverNameInput.value = currentDriverName;
+    }
+  }
+  
+  updateDriverName(name) {
+    localStorage.setItem('driver_name', name);
   }
   
   resetRide() {
@@ -85,6 +124,9 @@ class TaxiOMeterApp {
     this.rideDistance = 0;
     this.lastCoords = null;
     this.rideCoords = [];
+    
+    // Update UI
+    this.updateRideActiveUI();
     
     MapModule.clearRoute();
     Router.navigateTo('home');
@@ -204,9 +246,9 @@ class TaxiOMeterApp {
     this.lastCoords = null;
     this.rideCoords = [];
     
-    // Navigate to end ride screen
-    Router.navigateTo('end-ride');
-    this.updateRideDisplay();
+    // Navigate back to home screen and update UI for active ride
+    Router.navigateTo('home');
+    this.updateRideActiveUI();
     
     // Show message if GPS is not available
     if (!GPS.hasLocationPermission()) {
@@ -214,6 +256,121 @@ class TaxiOMeterApp {
         alert('GPS is not available. Distance will be calculated manually or you can enable location access.');
       }, 500);
     }
+  }
+  
+  updateRideActiveUI() {
+    if (this.rideActive) {
+      // Update button text and functionality
+      const startBtn = document.getElementById('start-new-ride');
+      startBtn.textContent = 'Fahrt beenden';
+      startBtn.className = 'btn danger map-start-btn';
+      startBtn.onclick = () => this.showEndRideScreen();
+      
+      // Add pause button
+      this.addPauseButton();
+      
+      // Show ride info overlay
+      this.showRideInfoOverlay();
+    } else {
+      // Reset to original state
+      const startBtn = document.getElementById('start-new-ride');
+      startBtn.textContent = 'Neue Fahrt starten';
+      startBtn.className = 'btn map-start-btn';
+      startBtn.onclick = () => this.showStartRideScreen();
+      
+      // Remove pause button and overlay
+      this.removePauseButton();
+      this.hideRideInfoOverlay();
+    }
+  }
+  
+  addPauseButton() {
+    // Remove existing pause button if any
+    this.removePauseButton();
+    
+    const pauseBtn = document.createElement('button');
+    pauseBtn.id = 'pause-ride-btn';
+    pauseBtn.className = 'btn secondary map-pause-btn';
+    pauseBtn.textContent = this.ridePaused ? 'Fortsetzen' : 'Pausieren';
+    pauseBtn.onclick = () => this.togglePauseRide();
+    
+    document.querySelector('.map-container').appendChild(pauseBtn);
+  }
+  
+  removePauseButton() {
+    const pauseBtn = document.getElementById('pause-ride-btn');
+    if (pauseBtn) {
+      pauseBtn.remove();
+    }
+  }
+  
+  togglePauseRide() {
+    if (this.ridePaused) {
+      // Resume ride
+      this.ridePaused = false;
+      this.rideStartTime = Date.now() - (this.ridePauseTime || 0);
+      document.getElementById('pause-ride-btn').textContent = 'Pausieren';
+    } else {
+      // Pause ride
+      this.ridePaused = true;
+      this.ridePauseTime = Date.now() - this.rideStartTime;
+      document.getElementById('pause-ride-btn').textContent = 'Fortsetzen';
+    }
+  }
+  
+  showRideInfoOverlay() {
+    // Remove existing overlay if any
+    this.hideRideInfoOverlay();
+    
+    const overlay = document.createElement('div');
+    overlay.id = 'ride-info-overlay';
+    overlay.className = 'map-overlay ride-info';
+    overlay.innerHTML = `
+      <div><strong>Fahrt läuft</strong></div>
+      <div>Strecke: <span id="ride-distance-display">0.00</span> km</div>
+      <div>Zeit: <span id="ride-time-display">00:00</span></div>
+      <div>Preis: <span id="ride-price-display">€0.00</span></div>
+    `;
+    
+    document.querySelector('.map-container').appendChild(overlay);
+    
+    // Start updating the display
+    this.startRideDisplayUpdate();
+  }
+  
+  hideRideInfoOverlay() {
+    const overlay = document.getElementById('ride-info-overlay');
+    if (overlay) {
+      overlay.remove();
+    }
+    this.stopRideDisplayUpdate();
+  }
+  
+  startRideDisplayUpdate() {
+    this.rideDisplayInterval = setInterval(() => {
+      if (this.rideActive) {
+        this.updateRideDisplay();
+      }
+    }, 1000);
+  }
+  
+  stopRideDisplayUpdate() {
+    if (this.rideDisplayInterval) {
+      clearInterval(this.rideDisplayInterval);
+      this.rideDisplayInterval = null;
+    }
+  }
+  
+  showEndRideScreen() {
+    // Calculate current totals before showing end screen
+    if (!this.ridePaused) {
+      this.rideDuration = (Date.now() - this.rideStartTime) / 1000;
+    } else {
+      this.rideDuration = this.ridePauseTime / 1000;
+    }
+    
+    Router.navigateTo('end-ride');
+    this.updateRideDisplay();
   }
   
   endRide() {
@@ -227,7 +384,9 @@ class TaxiOMeterApp {
     
     // Calculate final duration
     if (!this.ridePaused) {
-      this.rideDuration += (Date.now() - this.rideStartTime) / 1000;
+      this.rideDuration = (Date.now() - this.rideStartTime) / 1000;
+    } else {
+      this.rideDuration = this.ridePauseTime / 1000;
     }
     
     // Calculate fare
@@ -258,6 +417,9 @@ class TaxiOMeterApp {
     // Generate QR code
     this.generateReceiptQR();
     
+    // Update UI back to normal state
+    this.updateRideActiveUI();
+    
     // Show completion message
     alert(i18n.t('rideComplete'));
   }
@@ -269,10 +431,35 @@ class TaxiOMeterApp {
     const currentDuration = this.rideDuration + (this.ridePaused ? 0 : (now - this.rideStartTime) / 1000);
     const currentFare = Fare.calculate(this.rideDistance, currentDuration);
     
-    // Update display elements
-    document.getElementById('current-fare').textContent = currentFare.toFixed(2);
-    document.getElementById('current-distance').textContent = (this.rideDistance / 1000).toFixed(2);
-    document.getElementById('current-duration').textContent = Math.round(currentDuration / 60);
+    // Update end ride screen elements
+    const fareElement = document.getElementById('current-fare');
+    const distanceElement = document.getElementById('current-distance');
+    const durationElement = document.getElementById('current-duration');
+    
+    if (fareElement) fareElement.textContent = currentFare.toFixed(2);
+    if (distanceElement) distanceElement.textContent = (this.rideDistance / 1000).toFixed(2);
+    if (durationElement) durationElement.textContent = Math.round(currentDuration / 60);
+    
+    // Update ride info overlay elements
+    const rideDistanceDisplay = document.getElementById('ride-distance-display');
+    const rideTimeDisplay = document.getElementById('ride-time-display');
+    const ridePriceDisplay = document.getElementById('ride-price-display');
+    
+    if (rideDistanceDisplay) {
+      rideDistanceDisplay.textContent = (this.rideDistance / 1000).toFixed(2);
+    }
+    
+    if (rideTimeDisplay) {
+      const hours = Math.floor(currentDuration / 3600);
+      const minutes = Math.floor((currentDuration % 3600) / 60);
+      rideTimeDisplay.textContent = hours > 0 ? 
+        `${hours}:${minutes.toString().padStart(2, '0')}` : 
+        `${minutes}:${Math.floor(currentDuration % 60).toString().padStart(2, '0')}`;
+    }
+    
+    if (ridePriceDisplay) {
+      ridePriceDisplay.textContent = `€${currentFare.toFixed(2)}`;
+    }
     
     // Update route on map
     if (this.rideCoords.length > 1) {

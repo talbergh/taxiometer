@@ -18,24 +18,18 @@ export const QRModule = (() => {
       return;
     }
     
-    // Generate QR code using qrcode.js library
+    // Generate QR code using local qrcode.js library
     try {
-      QRCode.toCanvas(data, {
+      const qr = new QRCode(container, {
+        text: data,
         width: size,
-        margin: 2,
-        color: {
-          dark: '#18181b',
-          light: '#ffffff'
-        }
-      }, (err, canvas) => {
-        if (err) {
-          console.error('QR Code generation failed:', err);
-          container.innerHTML = '<p style="color: var(--danger);">QR Code generation failed</p>';
-          return;
-        }
-        
-        container.appendChild(canvas);
+        height: size,
+        colorDark: '#18181b',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.M
       });
+      
+      console.log('QR Code generated successfully');
     } catch (error) {
       console.error('QR Code generation error:', error);
       container.innerHTML = '<p style="color: var(--danger);">QR Code generation failed</p>';

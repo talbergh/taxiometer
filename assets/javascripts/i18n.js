@@ -12,8 +12,12 @@ export const i18n = (() => {
       // Onboarding
       welcome: 'Willkommen',
       welcomeDesc: 'TaxiOMeter hilft Ihnen bei der präzisen Fahrpreisberechnung mit GPS-Tracking.',
+      privacy: 'Datenschutz',
+      privacyDesc: 'Ihre Privatsphäre ist uns wichtig. Alle Daten werden nur lokal auf Ihrem Gerät gespeichert. Es werden keine Daten an externe Server übertragen oder gesammelt.',
       location: 'Standort',
       locationDesc: 'Für genaue Berechnungen benötigen wir Zugriff auf Ihren Standort.',
+      setup: 'Einrichtung',
+      setupDesc: 'Bitte geben Sie Ihren Namen ein. Dieser erscheint auf den Quittungen für Ihre Fahrgäste.',
       ready: 'Bereit',
       readyDesc: 'Alles ist eingerichtet! Sie können jetzt Ihre erste Fahrt starten.',
       getStarted: 'Los geht\'s',
@@ -47,6 +51,7 @@ export const i18n = (() => {
       currency: 'Währung',
       pricePerKm: 'Preis pro Kilometer',
       baseFare: 'Grundgebühr',
+      driverName: 'Fahrername',
       
       // History
       noRides: 'Noch keine Fahrten',

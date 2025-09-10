@@ -5,8 +5,56 @@
   --primary: #18181b;
   --accent: #0a84ff;
   --bg: #101014;
-  --card: #23232a;
-  --danger: #ff453a;
+  --card: #23232.input-group {
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.address-suggestions {
+  position: absolute;
+  top: 100%;
+  left:.onboarding-icon {
+  font-size: 4rem;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+.onboarding-icon img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+}  right: 0;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-top: none;
+  border-radius: 0 0 var(--radius) var(--radius);
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  display: none;
+}
+
+.address-suggestion {
+  padding: 0.75rem;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  transition: background-color 0.2s;
+}
+
+.address-suggestion:hover {
+  background: var(--accent-light);
+}
+
+.address-suggestion:last-child {
+  border-bottom: none;
+}nger: #ff453a;
   --success: #32d74b;
   --warning: #ff9500;
   --radius: 22px;
@@ -216,13 +264,29 @@ input:focus, select:focus, textarea:focus {
 
 .map-start-btn {
   position: absolute;
-  bottom: 100px; /* Above bottom nav */
+  bottom: 160px; /* Higher above bottom nav for iPhone 15 compatibility */
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
   width: auto;
   min-width: 200px;
+  max-width: 280px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  /* Ensure button is in safe touch area for modern smartphones */
+  margin: 0 20px;
+}
+
+/* Additional mobile safety positioning for modern smartphones */
+@media screen and (max-height: 800px) {
+  .map-start-btn {
+    bottom: 140px;
+  }
+}
+
+@media screen and (max-height: 700px) {
+  .map-start-btn {
+    bottom: 120px;
+  }
 }
 
 .map-overlay {
@@ -236,7 +300,124 @@ input:focus, select:focus, textarea:focus {
   z-index: 1000;
 }
 
-/* Onboarding */
+.ride-info {
+  top: 1rem;
+  left: 1rem;
+  right: auto;
+  min-width: 150px;
+  font-size: 0.9rem;
+}
+
+.ride-info div {
+  margin-bottom: 0.25rem;
+}
+
+.ride-info div:last-child {
+  margin-bottom: 0;
+}
+
+.map-pause-btn {
+  position: absolute;
+  bottom: 220px; /* Above the main button */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  width: auto;
+  min-width: 120px;
+  max-width: 160px;
+}
+
+/* Mobile adjustments for pause button */
+@media screen and (max-height: 800px) {
+  .map-pause-btn {
+    bottom: 200px;
+  }
+}
+
+@media screen and (max-height: 700px) {
+  .map-pause-btn {
+    bottom: 180px;
+  }
+}
+
+/* Settings Tabs */
+.settings-tabs {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.tab-buttons {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  background: var(--card);
+  margin-bottom: 1rem;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+  border-bottom: 2px solid transparent;
+}
+
+.tab-btn.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.tab-btn:hover {
+  background: var(--accent-light);
+}
+
+.tab-content {
+  display: none;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.libraries-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.library-item {
+  padding: 1rem;
+  background: var(--background);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+
+.library-item h3 {
+  margin: 0 0 0.5rem 0;
+  color: var(--accent);
+  font-size: 1.1rem;
+}
+
+.library-item p {
+  margin: 0.25rem 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.library-item a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.library-item a:hover {
+  text-decoration: underline;
+}
 .onboarding-container {
   position: fixed;
   top: 0;
