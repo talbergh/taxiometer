@@ -4,7 +4,7 @@
 const els = {
   // nav
   tabs: Array.from(document.querySelectorAll('.tabbar .tab')),
-  views: Array.from(document.querySelectorAll('.view')),
+  screens: Array.from(document.querySelectorAll('.screen')),
   // settings
   rate: document.getElementById('rate'),
   autoZoom: document.getElementById('autoZoom'),
@@ -25,10 +25,9 @@ const els = {
   // history
   historyList: document.getElementById('historyList'),
   // modals
-  startModal: document.getElementById('startModal'),
   confirmStart: document.getElementById('confirmStart'),
   rideName: document.getElementById('rideName'),
-  endModal: document.getElementById('endModal'),
+  summaryScreen: document.getElementById('summaryScreen'),
   mName: document.getElementById('mName'),
   mDuration: document.getElementById('mDuration'),
   mDistance: document.getElementById('mDistance'),
@@ -40,6 +39,16 @@ const els = {
   shareBtn: document.getElementById('shareBtn'),
   resetBtn: document.getElementById('resetBtn'),
   miniMap: document.getElementById('miniMap'),
+  startScreen: document.getElementById('startScreen'),
+  cancelStart: document.getElementById('cancelStart'),
+  closeSummary: document.getElementById('closeSummary'),
+  onboardingScreen: document.getElementById('onboardingScreen'),
+  obNext1: document.getElementById('obNext1'),
+  obBack2: document.getElementById('obBack2'),
+  obRequestLocation: document.getElementById('obRequestLocation'),
+  obBack3: document.getElementById('obBack3'),
+  obNext3: document.getElementById('obNext3'),
+  obFinish: document.getElementById('obFinish'),
   // PWA
   installBtn: document.getElementById('installBtn'),
 };
@@ -106,8 +115,8 @@ els.installBtn.addEventListener('click', async () => {
 // Tabs
 els.tabs.forEach((btn) => btn.addEventListener('click', () => {
   const target = btn.getAttribute('data-target');
+  showScreen(target);
   els.tabs.forEach(b => b.classList.toggle('active', b === btn));
-  els.views.forEach(v => v.classList.toggle('active', v.id === target));
   if (target === 'homeView') setTimeout(() => leafletMap?.invalidateSize(), 50);
 }));
 
@@ -120,8 +129,9 @@ els.autoZoom.addEventListener('change', () => { settings.autoZoom = els.autoZoom
 els.jitter.addEventListener('change', () => { const v = parseFloat(els.jitter.value); if (!isNaN(v) && v >= 0) { settings.jitterM = v; saveSettings(); }});
 
 // Home controls
-els.startBtn.addEventListener('click', () => openStartModal());
-els.confirmStart.addEventListener('click', (e) => { e.preventDefault(); closeStartModal(true); });
+els.startBtn.addEventListener('click', () => openStartFlow());
+els.confirmStart.addEventListener('click', (e) => { e.preventDefault(); confirmStartFlow(); });
+els.cancelStart?.addEventListener('click', () => cancelStartFlow());
 els.pauseBtn.addEventListener('click', pauseRide);
 els.resumeBtn.addEventListener('click', resumeRide);
 els.stopBtn.addEventListener('click', stopRide);
@@ -131,78 +141,48 @@ els.locateBtn.addEventListener('click', () => centerOnLast(true));
 els.discountMode.addEventListener('change', updateEndTotals);
 els.discountValue.addEventListener('input', updateEndTotals);
 els.shareBtn.addEventListener('click', shareSummary);
-els.resetBtn.addEventListener('click', () => { resetAll(); closeEndModal(); });
+els.resetBtn.addEventListener('click', () => { resetAll(); showScreen('homeView'); });
+els.closeSummary?.addEventListener('click', () => { showScreen('homeView'); });
 
 // Visibility change: re-acquire wake lock if needed
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && settings.keepAwake && state.running) requestWakeLock(); });
 
 function onboarding(){
-  const KEY = 'taxiometer.onboarded.v2';
-  const shown = localStorage.getItem(KEY);
+  const KEY = 'taxiometer.onboarded.v3';
   const splash = document.getElementById('splash');
-  const modal = document.getElementById('onboardingModal');
-  
-  let currentStep = 1;
-  let locationGranted = false;
-  
-  setTimeout(()=>{ splash?.classList.add('hide'); }, 1400);
-  
-  if(!shown){ 
-    setTimeout(()=> modal.showModal(), 1000);
-    
-    // Step navigation
-    document.getElementById('nextStep1')?.addEventListener('click', () => showStep(2));
-    document.getElementById('backStep2')?.addEventListener('click', () => showStep(1));
-    document.getElementById('requestLocation')?.addEventListener('click', requestLocationAccess);
-    document.getElementById('backStep3')?.addEventListener('click', () => showStep(2));
-    document.getElementById('nextStep3')?.addEventListener('click', () => {
-      const rate = parseFloat(document.getElementById('onboardingRate').value);
-      if (rate > 0) {
-        settings.rate = rate;
-        saveSettings();
-        els.rate.value = rate;
-        showStep(4);
-      } else {
-        alert('Bitte gib einen gültigen Preis ein.');
-      }
-    });
-    document.getElementById('backStep4')?.addEventListener('click', () => showStep(3));
-    document.getElementById('finishOnboarding')?.addEventListener('click', finishOnboarding);
-  }
-  
-  function showStep(step) {
-    document.querySelectorAll('.onboarding-step').forEach(el => el.style.display = 'none');
-    document.getElementById(`onboardingStep${step}`).style.display = 'block';
-    
-    // Update progress dots
-    document.querySelectorAll('.progress-dot').forEach((dot, index) => {
-      dot.classList.toggle('active', index + 1 === step);
-    });
-    
-    currentStep = step;
-  }
-  
-  function requestLocationAccess() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          locationGranted = true;
-          showStep(3);
-          document.getElementById('onboardingRate').value = settings.rate || 1.50;
-        },
-        (error) => {
-          alert('Standortzugriff ist erforderlich für die GPS-Funktion. Bitte erlaube den Zugriff in den Browser-Einstellungen.');
-        }
-      );
-    } else {
-      alert('Dein Gerät unterstützt keine Standortdienste.');
-    }
-  }
-  
-  function finishOnboarding() {
-    localStorage.setItem(KEY, '1');
-    modal.close();
-  }
+  setTimeout(()=> splash?.classList.add('hide'), 1400);
+  if(localStorage.getItem(KEY)) { hideOnboarding(); return; }
+  showScreen('onboardingScreen', false);
+  let current=1;
+  const steps = Array.from(document.querySelectorAll('.ob-step'));
+  function activate(i){ steps.forEach((s,idx)=> s.classList.toggle('active', idx===i-1)); current=i; }
+  function setDots(step){ const group = steps[step-1].querySelectorAll('.progress-dot'); /* already embedded per step */ }
+  const rateInput = document.getElementById('onboardingRate');
+  els.obNext1?.addEventListener('click', ()=> activate(2));
+  els.obBack2?.addEventListener('click', ()=> activate(1));
+  els.obRequestLocation?.addEventListener('click', ()=> {
+    if(!navigator.geolocation){ alert('Kein Geolocation Support'); return; }
+    navigator.geolocation.getCurrentPosition(
+      ()=>{ rateInput.value = settings.rate; activate(3); },
+      (err)=>{
+        let msg = 'Standort verweigert. Bitte in den Einstellungen freigeben.';
+        if(err && err.code === 1) msg = 'Standortzugriff abgelehnt. Prüfe die Browser- oder App-Berechtigungen.';
+        else if(err && err.code === 2) msg = 'Standort nicht verfügbar. Prüfe GPS oder Internet.';
+        else if(err && err.code === 3) msg = 'Standortabfrage abgebrochen oder zu langsam.';
+        else if(err && err.message) msg = err.message;
+        alert(msg);
+      },
+      { enableHighAccuracy:true, timeout:10000 }
+    );
+  });
+  els.obBack3?.addEventListener('click', ()=> activate(2));
+  els.obNext3?.addEventListener('click', ()=> {
+    const v = parseFloat(rateInput.value);
+    if(v>0){ settings.rate=v; saveSettings(); els.rate.value=v; activate(4);} else alert('Bitte gültigen Preis eingeben');
+  });
+  els.obFinish?.addEventListener('click', ()=> { localStorage.setItem(KEY,'1'); hideOnboarding(); showScreen('homeView'); });
+  activate(1);
+  function hideOnboarding(){ els.onboardingScreen?.classList.remove('active'); els.onboardingScreen?.classList.add('gone'); }
 }
 
 // Map initialization
@@ -271,8 +251,9 @@ function centerOnLast(force=false){
 }
 
 // Ride flow
-function openStartModal(){ els.rideName.value = state.rideName || ''; els.startModal.showModal(); }
-function closeStartModal(confirm=false){ const name = els.rideName.value.trim(); els.startModal.close(); if (confirm) startRide(name); }
+function openStartFlow(){ els.rideName.value = state.rideName || ''; showScreen('startScreen', false); }
+function confirmStartFlow(){ const name = els.rideName.value.trim(); showScreen('homeView'); startRide(name); }
+function cancelStartFlow(){ showScreen('homeView'); }
 
 function startRide(name) {
   if (!navigator.geolocation) { setStatus('Geolocation wird nicht unterstützt.'); return; }
@@ -348,9 +329,9 @@ function showEndModal(){
     points: state.points,
   });
   renderHistory();
-  els.endModal.showModal();
+  showScreen('summaryScreen', false);
 }
-function closeEndModal(){ els.endModal.close(); }
+function closeEndModal(){ showScreen('homeView'); }
 
 function updateEndTotals(){
   const base = parseFloat(els.mBasePrice.textContent) || 0; const mode = els.discountMode.value; const val = parseFloat(els.discountValue.value) || 0;
@@ -417,7 +398,7 @@ function openRidePreview(r){
   els.mBasePrice.textContent = (r.distanceKm * (r.pricePerKm||settings.rate)).toFixed(2);
   els.discountMode.value='none'; els.discountValue.value='0'; updateEndTotals();
   initMiniMap(r.points);
-  els.endModal.showModal();
+  showScreen('summaryScreen', false);
 }
 
 function initMiniMap(points){
@@ -427,8 +408,14 @@ function initMiniMap(points){
   }
   const poly = L.polyline(pts.map(p=>[p.lat,p.lon]), { color:'#f5c84b', weight:3 }).addTo(leafletMiniMap);
   setTimeout(()=>{ leafletMiniMap.invalidateSize(); if (pts.length>1) leafletMiniMap.fitBounds(poly.getBounds(), { padding:[20,20] }); }, 50);
-  // clean up on close
-  els.endModal.addEventListener('close', () => { leafletMiniMap.eachLayer(l => { if (l instanceof L.Polyline) leafletMiniMap.removeLayer(l); }); }, { once: true });
+  // clean up when leaving summary screen
+  const observer = new MutationObserver(()=>{
+    if(!els.summaryScreen.classList.contains('active')){
+      leafletMiniMap.eachLayer(l => { if (l instanceof L.Polyline) leafletMiniMap.removeLayer(l); });
+      observer.disconnect();
+    }
+  });
+  observer.observe(els.summaryScreen,{attributes:true,attributeFilter:['class']});
 }
 
 // Helpers
@@ -445,6 +432,15 @@ function persistState(){ try{ localStorage.setItem(STATE_KEY, JSON.stringify(sta
 }
 function applySettingsToUI(s){ els.rate.value = s.rate; els.autoZoom.checked=!!s.autoZoom; els.keepAwake.checked=!!s.keepAwake; els.jitter.value = s.jitterM ?? 3; }
 function applyStateToUI(){ els.startBtn.disabled = state.running; els.pauseBtn.disabled = !state.running || state.paused; els.resumeBtn.disabled = !state.running || !state.paused; els.stopBtn.disabled = !state.running; }
+
+// Screen navigation helper
+function showScreen(id, updateTabs=true){
+  els.screens.forEach(s => s.classList.toggle('active', s.id === id));
+  if(updateTabs){ els.tabs.forEach(t=> t.classList.toggle('active', t.getAttribute('data-target')===id)); }
+  if(id==='homeView') setTimeout(()=> leafletMap?.invalidateSize(), 60);
+  const tabbar = document.getElementById('tabbar');
+  if(['startScreen','summaryScreen','onboardingScreen'].includes(id)) tabbar.style.display='none'; else tabbar.style.display='flex';
+}
 
 // Wake Lock
 async function requestWakeLock(){ try{ if('wakeLock' in navigator){ wakeLock = await navigator.wakeLock.request('screen'); wakeLock.addEventListener('release', ()=>{}); } } catch(e){ console.warn('WakeLock failed', e);} }

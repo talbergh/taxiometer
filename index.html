@@ -3,81 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
-    <meta name="theme-co      <!-- Onboarding Modal -->
-      <dialog id="onboardingModal" class="modal">
-        <form method="dialog" class="modal-card">
-          <div id="onboardingStep1" class="onboarding-step">
-            <h3>Willkommen bei TaxiOMeter</h3>
-            <div class="onboarding-progress">
-              <div class="progress-dot active"></div>
-              <div class="progress-dot"></div>
-              <div class="progress-dot"></div>
-              <div class="progress-dot"></div>
-            </div>
-            <p>Dein professioneller GPS-Taxameter für präzise Fahrtenabrechnung.</p>
-            <div class="actions">
-              <button type="button" id="nextStep1" class="primary">Weiter <i class="fa-solid fa-arrow-right"></i></button>
-            </div>
-          </div>
-          
-          <div id="onboardingStep2" class="onboarding-step" style="display:none;">
-            <h3>Standortzugriff</h3>
-            <div class="onboarding-progress">
-              <div class="progress-dot"></div>
-              <div class="progress-dot active"></div>
-              <div class="progress-dot"></div>
-              <div class="progress-dot"></div>
-            </div>
-            <p>Für exakte Distanzmessung benötigen wir Zugriff auf deinen Standort. Dies wird nur während aktiver Fahrten verwendet.</p>
-            <div class="actions">
-              <button type="button" id="backStep2" class="ghost"><i class="fa-solid fa-arrow-left"></i> Zurück</button>
-              <button type="button" id="requestLocation" class="primary">Zugriff erlauben</button>
-            </div>
-          </div>
-          
-          <div id="onboardingStep3" class="onboarding-step" style="display:none;">
-            <h3>Tarif festlegen</h3>
-            <div class="onboarding-progress">
-              <div class="progress-dot"></div>
-              <div class="progress-dot"></div>
-              <div class="progress-dot active"></div>
-              <div class="progress-dot"></div>
-            </div>
-            <p>Stelle deinen Preis pro Kilometer ein:</p>
-            <div class="input-affix" style="margin: 16px 0;">
-              <input id="onboardingRate" type="number" inputmode="decimal" min="0" step="0.01" placeholder="1.50" />
-              <span class="affix">€/km</span>
-            </div>
-            <div class="actions">
-              <button type="button" id="backStep3" class="ghost"><i class="fa-solid fa-arrow-left"></i> Zurück</button>
-              <button type="button" id="nextStep3" class="primary">Weiter <i class="fa-solid fa-arrow-right"></i></button>
-            </div>
-          </div>
-          
-          <div id="onboardingStep4" class="onboarding-step" style="display:none;">
-            <h3>Alles bereit!</h3>
-            <div class="onboarding-progress">
-              <div class="progress-dot"></div>
-              <div class="progress-dot"></div>
-              <div class="progress-dot"></div>
-              <div class="progress-dot active"></div>
-            </div>
-            <div style="background: var(--bg-3); border-radius: 12px; padding: 16px; margin: 16px 0;">
-              <h4 style="margin: 0 0 8px 0; color: var(--accent);">So funktioniert's:</h4>
-              <ul style="margin: 0; padding-left: 20px; color: var(--text-2);">
-                <li>Tippe auf "Start" und gib optional einen Fahrtnamen ein</li>
-                <li>Die Karte zeigt deine Route in Echtzeit</li>
-                <li>Nutze "Pause" für Wartezeiten</li>
-                <li>Bei "Stop" erhältst du eine Zusammenfassung mit Rabattmöglichkeit</li>
-              </ul>
-            </div>
-            <div class="actions">
-              <button type="button" id="backStep4" class="ghost"><i class="fa-solid fa-arrow-left"></i> Zurück</button>
-              <button type="button" id="finishOnboarding" class="success"><i class="fa-solid fa-check"></i> Los geht's!</button>
-            </div>
-          </div>
-        </form>
-      </dialog>#0b0f14" />
+  <meta name="theme-color" content="#0b0f14" />
     <meta name="color-scheme" content="dark" />
     <meta name="description" content="TaxiOMeter von Talbergh – GPS-basierter Taxameter als mobile Web-App (PWA). Preis pro km festlegen, Fahrt starten, Route tracken, Preis berechnen." />
     <meta name="author" content="Talbergh" />
@@ -171,11 +97,12 @@
         </div>
         <button id="installBtn" class="ghost" hidden><i class="fa-solid fa-download"></i> Installieren</button>
       </header>
-
-      <main id="views" class="views">
-        <!-- Home View -->
-        <section id="homeView" class="view active" aria-label="Home">
-          <div class="panel map-panel">
+      
+      <!-- SCREEN CONTAINER -->
+      <main id="screenContainer" class="screens">
+        <!-- HOME (Map) -->
+        <section id="homeView" class="screen active" aria-label="Home">
+          <div class="map-wrapper">
             <div id="map" class="map" aria-label="Karte"></div>
             <div class="overlay top-right">
               <button id="locateBtn" class="icon-btn" title="Position zentrieren"><i class="fa-solid fa-location-crosshairs"></i></button>
@@ -198,16 +125,65 @@
           </div>
         </section>
 
-        <!-- History View -->
-        <section id="historyView" class="view" aria-label="Verlauf">
-          <div class="panel list-panel">
+        <!-- START SCREEN -->
+        <section id="startScreen" class="screen" aria-label="Fahrt starten">
+          <div class="flow-wrapper">
+            <h2><i class="fa-solid fa-flag-checkered" style="color:var(--accent);"></i> Fahrt starten</h2>
+            <label for="rideName" class="muted" style="margin-top:8px;">Name (optional)</label>
+            <input id="rideName" placeholder="z.B. Flughafen" class="flow-input" />
+            <div class="flow-actions">
+              <button id="cancelStart" class="ghost">Abbrechen</button>
+              <button id="confirmStart" class="primary"><i class="fa-solid fa-play"></i> Start</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- SUMMARY SCREEN -->
+        <section id="summaryScreen" class="screen" aria-label="Fahrt Zusammenfassung">
+          <div class="flow-wrapper">
+            <h2><i class="fa-solid fa-clipboard-check" style="color:var(--accent);"></i> Zusammenfassung</h2>
+            <div class="grid-2" style="margin-top:12px;">
+              <div><span class="muted">Name</span><div id="mName">–</div></div>
+              <div><span class="muted">Dauer</span><div id="mDuration">–</div></div>
+              <div><span class="muted">Distanz</span><div><span id="mDistance">–</span> km</div></div>
+              <div><span class="muted">Ø km/h</span><div id="mAvg">–</div></div>
+            </div>
+            <div class="price-box" style="margin-top:16px;">
+              <div class="row"><span class="muted">Grundpreis</span><strong>€<span id="mBasePrice">0.00</span></strong></div>
+              <div class="row discount-row">
+                <span class="muted">Rabatt</span>
+                <div class="discount-inputs">
+                  <select id="discountMode">
+                    <option value="none">Keiner</option>
+                    <option value="percent">%</option>
+                    <option value="amount">€</option>
+                  </select>
+                  <input id="discountValue" type="number" step="0.01" min="0" value="0" />
+                </div>
+              </div>
+              <div class="row total"><span>Gesamt</span><strong>€<span id="mTotal">0.00</span></strong></div>
+            </div>
+            <div id="miniMap" class="mini-map" aria-label="Routenübersicht" style="margin-top:16px;"></div>
+            <div class="flow-actions" style="margin-top:16px;">
+              <button id="shareBtn" class="secondary"><i class="fa-solid fa-share-nodes"></i> Teilen</button>
+              <button id="resetBtn" class="ghost">Neu</button>
+              <button id="closeSummary" class="primary">Fertig</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- HISTORY SCREEN -->
+        <section id="historyView" class="screen" aria-label="Verlauf">
+          <div class="list-wrapper">
+            <h2>Verlauf</h2>
             <ul id="historyList" class="list"></ul>
           </div>
         </section>
 
-        <!-- Settings View -->
-        <section id="settingsView" class="view" aria-label="Einstellungen">
-          <div class="panel form-panel">
+        <!-- SETTINGS SCREEN -->
+        <section id="settingsView" class="screen" aria-label="Einstellungen">
+          <div class="settings-wrapper">
+            <h2>Einstellungen</h2>
             <div class="form-row">
               <label for="rate">Preis pro km</label>
               <div class="input-affix">
@@ -238,75 +214,62 @@
             </div>
           </div>
         </section>
+
+        <!-- ONBOARDING SCREEN -->
+        <section id="onboardingScreen" class="screen" aria-label="Onboarding">
+          <div class="onboarding-flow">
+            <div class="ob-steps" data-step="1">
+              <div class="ob-step step-1 active">
+                <h2>Willkommen</h2>
+                <p>Dein professioneller GPS-Taxameter für präzise Fahrtenabrechnung.</p>
+                <div class="onboarding-progress"><div class="progress-dot active"></div><div class="progress-dot"></div><div class="progress-dot"></div><div class="progress-dot"></div></div>
+                <button id="obNext1" class="primary full"><i class="fa-solid fa-arrow-right"></i> Weiter</button>
+              </div>
+              <div class="ob-step step-2">
+                <h2>Standort</h2>
+                <p>Für exakte Distanzmessung benötigen wir deinen Standort (nur während Fahrten).</p>
+                <div class="onboarding-progress"><div class="progress-dot"></div><div class="progress-dot active"></div><div class="progress-dot"></div><div class="progress-dot"></div></div>
+                <div class="flow-actions">
+                  <button id="obBack2" class="ghost">Zurück</button>
+                  <button id="obRequestLocation" class="primary">Zugriff erlauben</button>
+                </div>
+              </div>
+              <div class="ob-step step-3">
+                <h2>Tarif</h2>
+                <p>Stelle deinen Preis pro Kilometer ein.</p>
+                <div class="input-affix" style="margin:16px 0;">
+                  <input id="onboardingRate" type="number" inputmode="decimal" min="0" step="0.01" placeholder="1.50" />
+                  <span class="affix">€/km</span>
+                </div>
+                <div class="onboarding-progress"><div class="progress-dot"></div><div class="progress-dot"></div><div class="progress-dot active"></div><div class="progress-dot"></div></div>
+                <div class="flow-actions">
+                  <button id="obBack3" class="ghost">Zurück</button>
+                  <button id="obNext3" class="primary">Weiter</button>
+                </div>
+              </div>
+              <div class="ob-step step-4">
+                <h2>Bereit!</h2>
+                <div class="tips-box">
+                  <ul>
+                    <li>Tippe auf Start und gib optional einen Fahrtnamen ein.</li>
+                    <li>Karte zeigt deine Route in Echtzeit.</li>
+                    <li>Pausiere bei Wartezeiten.</li>
+                    <li>Nach Stop erhältst du eine Zusammenfassung.</li>
+                  </ul>
+                </div>
+                <div class="onboarding-progress"><div class="progress-dot"></div><div class="progress-dot"></div><div class="progress-dot"></div><div class="progress-dot active"></div></div>
+                <button id="obFinish" class="success full"><i class="fa-solid fa-check"></i> Los geht's</button>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
 
-      <nav class="tabbar safe-area-inset">
+      <nav class="tabbar safe-area-inset" id="tabbar">
         <button class="tab active" data-target="homeView"><i class="fa-solid fa-house"></i><span>Home</span></button>
         <button class="tab" data-target="historyView"><i class="fa-solid fa-clock-rotate-left"></i><span>Verlauf</span></button>
         <button class="tab" data-target="settingsView"><i class="fa-solid fa-gear"></i><span>Einstellungen</span></button>
       </nav>
-
-      <!-- Start Ride Modal -->
-      <dialog id="startModal" class="modal">
-        <form method="dialog" class="modal-card">
-          <h3>Fahrt starten</h3>
-          <label for="rideName">Name (optional)</label>
-          <input id="rideName" name="rideName" placeholder="z.B. Flughafen" />
-          <div class="actions">
-            <button value="cancel" class="ghost">Abbrechen</button>
-            <button id="confirmStart" value="default" class="primary"><i class="fa-solid fa-play"></i> Start</button>
-          </div>
-        </form>
-      </dialog>
-
-      <!-- End Summary Modal -->
-      <dialog id="endModal" class="modal">
-        <form method="dialog" class="modal-card">
-          <h3>Fahrt abgeschlossen</h3>
-          <div class="grid-2">
-            <div><span class="muted">Name</span><div id="mName">–</div></div>
-            <div><span class="muted">Dauer</span><div id="mDuration">–</div></div>
-            <div><span class="muted">Distanz</span><div><span id="mDistance">–</span> km</div></div>
-            <div><span class="muted">Ø km/h</span><div id="mAvg">–</div></div>
-          </div>
-          <div class="price-box">
-            <div class="row"><span class="muted">Grundpreis</span><strong>€<span id="mBasePrice">0.00</span></strong></div>
-            <div class="row discount-row">
-              <span class="muted">Rabatt</span>
-              <div class="discount-inputs">
-                <select id="discountMode">
-                  <option value="none">Keiner</option>
-                  <option value="percent">%</option>
-                  <option value="amount">€</option>
-                </select>
-                <input id="discountValue" type="number" step="0.01" min="0" value="0" />
-              </div>
-            </div>
-            <div class="row total"><span>Gesamt</span><strong>€<span id="mTotal">0.00</span></strong></div>
-          </div>
-          <div id="miniMap" class="mini-map" aria-label="Routenübersicht"></div>
-          <div class="actions">
-            <button id="shareBtn" class="secondary"><i class="fa-solid fa-share-nodes"></i> Teilen</button>
-            <button id="resetBtn" class="ghost">Neu</button>
-            <button value="close" class="primary">Fertig</button>
-          </div>
-        </form>
-      </dialog>
-
-      <!-- Onboarding Modal -->
-      <dialog id="onboardingModal" class="modal">
-        <form method="dialog" class="modal-card">
-          <h3>Willkommen bei TaxiOMeter</h3>
-          <ol class="steps">
-            <li>Erlaube Standortzugriff für exaktes Tracking.</li>
-            <li>Lege deinen Preis pro km unter Einstellungen fest.</li>
-            <li>Starte eine Fahrt, optional mit Name, und folge der Karte.</li>
-          </ol>
-          <div class="actions">
-            <button value="close" class="primary" id="onboardingOk"><i class="fa-solid fa-check"></i> Los geht’s</button>
-          </div>
-        </form>
-      </dialog>
 
       <!-- Splash overlay -->
       <div id="splash" class="splash">
