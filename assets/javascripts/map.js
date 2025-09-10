@@ -6,6 +6,11 @@ export const MapModule = (() => {
   let currentPosition = null;
   
   function initMap(containerId) {
+    if (typeof L === 'undefined') {
+      console.warn('Leaflet (L) not loaded. Skipping map init (likely offline).');
+      map = null;
+      return null;
+    }
     // Initialize Leaflet map
     map = L.map(containerId, {
       zoomControl: false,
@@ -26,6 +31,7 @@ export const MapModule = (() => {
   }
   
   function updateUserLocation(lat, lng) {
+  if (!map) return; // Guard if map couldn't initialize
     currentPosition = { lat, lng };
     
     if (userMarker) {
@@ -49,6 +55,7 @@ export const MapModule = (() => {
   }
   
   function addRoute(coordinates) {
+  if (!map) return; // Guard if map couldn't initialize
     if (routeLayer) {
       map.removeLayer(routeLayer);
     }
@@ -67,6 +74,7 @@ export const MapModule = (() => {
   }
   
   function clearRoute() {
+  if (!map) return;
     if (routeLayer) {
       map.removeLayer(routeLayer);
       routeLayer = null;

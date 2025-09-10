@@ -25,10 +25,7 @@ class TaxiOMeterApp {
   }
 
   async init() {
-    // Initialize modules
-    Router.init();
-    
-    // Check for onboarding
+  // Check for onboarding FIRST to avoid initializing heavy modules under overlay
     if (Onboarding.init(() => this.onOnboardingComplete())) {
       this.setupOnboarding();
       return;
@@ -46,6 +43,9 @@ class TaxiOMeterApp {
   }
   
   onOnboardingComplete() {
+  // Initialize Router now that onboarding is done (or was already completed)
+  Router.init();
+    
     // Apply language settings
     i18n.setLanguage(this.settings.language);
     
@@ -62,6 +62,9 @@ class TaxiOMeterApp {
       km: this.settings.pricePerKm,
       min: 0.5 // Fixed per minute rate
     });
+
+  // Ensure we land on home after onboarding
+  Router.navigateTo('home');
   }
   
   setupEventListeners() {

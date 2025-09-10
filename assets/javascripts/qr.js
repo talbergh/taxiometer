@@ -56,8 +56,9 @@ export const QRModule = (() => {
     // Convert to base64 with URL-safe encoding
     try {
       const json = JSON.stringify(compressed);
-      // Use URL-safe base64 encoding
-      return btoa(json).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+      // Unicode-safe base64 encoding
+      const utf8 = encodeURIComponent(json).replace(/%([0-9A-F]{2})/g, (_, p1) => String.fromCharCode('0x' + p1));
+      return btoa(utf8).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
     } catch (error) {
       console.error('Failed to encode ride data:', error);
       return null;
@@ -72,8 +73,9 @@ export const QRModule = (() => {
         padded += '=';
       }
       
-      const json = atob(padded);
-      const compressed = JSON.parse(json);
+  const bin = atob(padded);
+  const json = decodeURIComponent(Array.prototype.map.call(bin, c => '%' + c.charCodeAt(0).toString(16).padStart(2, '0')).join(''));
+  const compressed = JSON.parse(json);
       
       // Expand back to full format
       return {
