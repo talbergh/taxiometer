@@ -182,7 +182,7 @@ class TaxiOMeterApp {
   }
   
   onLocationUpdate(position) {
-    const { latitude, longitude } = position.coords;
+    const { latitude, longitude, accuracy } = position.coords;
     
     // Update map
     MapModule.updateUserLocation(latitude, longitude);
@@ -190,17 +190,29 @@ class TaxiOMeterApp {
     // Handle active ride tracking
     if (!this.rideActive || this.ridePaused) return;
     
+    // Filter out inaccurate GPS readings (more than 50 meters accuracy)
+    if (accuracy > 50) {
+      console.log('GPS reading too inaccurate:', accuracy + 'm');
+      return;
+    }
+    
     if (this.lastCoords) {
       const distance = this.haversine(
         this.lastCoords.lat, this.lastCoords.lon,
         latitude, longitude
       );
       
-      if (distance > 2) { // Only count significant movements
+      // Increase minimum distance threshold to reduce GPS jitter
+      // Only count movements greater than 10 meters to avoid GPS noise
+      if (distance > 10) {
         this.rideDistance += distance;
         this.rideCoords.push({ lat: latitude, lng: longitude });
+        console.log('Valid movement detected:', distance.toFixed(2) + 'm');
+      } else if (distance > 0) {
+        console.log('GPS jitter filtered out:', distance.toFixed(2) + 'm');
       }
     } else {
+      // Always add first coordinate
       this.rideCoords.push({ lat: latitude, lng: longitude });
     }
     
@@ -480,8 +492,12 @@ class TaxiOMeterApp {
       return;
     }
     
-    const shareUrl = `${window.location.origin}/share.html?data=${encodedData}`;
-    QRModule.generateQR(shareUrl, 'qr-code', 200);
+    // Use shorter URL structure - try just the domain root with parameter
+    const shareUrl = `${window.location.origin}/share.html?r=${encodedData}`;
+    console.log('Share URL length:', shareUrl.length);
+    
+    // Generate smaller QR code for better scannability
+    QRModule.generateQR(shareUrl, 'qr-code', 140);
   }
   
   shareReceipt() {
