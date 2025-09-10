@@ -1,286 +1,165 @@
-<!doctype html>
-<html lang="de" class="dark">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
-  <meta name="theme-color" content="#0b0f14" />
-    <meta name="color-scheme" content="dark" />
-    <meta name="description" content="TaxiOMeter von Talbergh – GPS-basierter Taxameter als mobile Web-App (PWA). Preis pro km festlegen, Fahrt starten, Route tracken, Preis berechnen." />
-    <meta name="author" content="Talbergh" />
-    <meta name="format-detection" content="telephone=no, date=no, email=no, address=no" />
-    <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-title" content="TaxiOMeter" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="application-name" content="TaxiOMeter" />
-
-    <title>TaxiOMeter · Talbergh</title>
-
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Crect width='256' height='256' rx='56' fill='%230b0f14'/%3E%3Cpath d='M44 150a18 18 0 0 1 18-18h132a18 18 0 0 1 18 18v24a14 14 0 0 1-14 14h-6a18 18 0 0 1-18-18v-2H82v2a18 18 0 0 1-18 18h-6a14 14 0 0 1-14-14zm24-44 20-30a18 18 0 0 1 15-8h50a18 18 0 0 1 15 8l20 30z' fill='%23cfe6ff'/%3E%3Crect x='88' y='52' width='80' height='28' rx='6' fill='%23cfe6ff'/%3E%3C/svg%3E" />
-
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
-
-  <!-- Font Awesome (Free) -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer" />
-  <!-- Leaflet -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-    <link rel="stylesheet" href="./styles.css" />
-
-    <script>
-      // Generate manifest and Apple touch icon at runtime to avoid external assets while keeping PWA installability.
-      (function generateManifestAndIcons() {
-        try {
-          const makeIcon = (size) => {
-            const c = document.createElement('canvas');
-            c.width = c.height = size;
-            const ctx = c.getContext('2d');
-            ctx.fillStyle = '#0b0f14';
-            ctx.fillRect(0, 0, size, size);
-            const g = ctx.createRadialGradient(size*0.35, size*0.35, size*0.1, size*0.5, size*0.5, size*0.7);
-            g.addColorStop(0, '#0e1621');
-            g.addColorStop(1, '#091118');
-            ctx.fillStyle = g;
-            ctx.beginPath();
-            ctx.arc(size/2, size/2, size*0.44, 0, Math.PI*2);
-            ctx.fill();
-            // Minimal taxi bar
-            ctx.fillStyle = '#f5c84b';
-            ctx.fillRect(size*0.3, size*0.46, size*0.4, size*0.08);
-            return c.toDataURL('image/png');
-          };
-
-          const icon192 = makeIcon(192);
-          const icon512 = makeIcon(512);
-
-          const manifest = {
-            name: 'TaxiOMeter by Talbergh',
-            short_name: 'TaxiOMeter',
-            description: 'GPS-basierter Taxameter. Preis pro km festlegen, Fahrt starten, Route tracken, Preis berechnen.',
-            start_url: (window.location.origin + window.location.pathname),
-            display: 'standalone',
-            orientation: 'portrait',
-            background_color: '#0b0f14',
-            theme_color: '#0b0f14',
-            icons: [
-              { src: icon192, sizes: '192x192', type: 'image/png', purpose: 'any maskable' },
-              { src: icon512, sizes: '512x512', type: 'image/png', purpose: 'any maskable' }
-            ]
-          };
-          const blob = new Blob([JSON.stringify(manifest)], { type: 'application/manifest+json' });
-          const url = URL.createObjectURL(blob);
-          const link = document.createElement('link');
-          link.rel = 'manifest';
-          link.href = url;
-          document.head.appendChild(link);
-
-          const apple = document.createElement('link');
-          apple.rel = 'apple-touch-icon';
-          apple.href = icon192;
-          document.head.appendChild(apple);
-        } catch (e) {
-          console.warn('Manifest/Icon generation failed', e);
-        }
-      })();
-    </script>
-  </head>
-  <body>
-    <div id="app" class="app-shell">
-      <header class="app-header safe-area-inset">
-        <div class="brand">
-          <i class="fa-solid fa-taxi logo" aria-hidden="true"></i>
-          <h1>TaxiOMeter</h1>
-          <span class="by">by Talbergh</span>
-        </div>
-        <button id="installBtn" class="ghost" hidden><i class="fa-solid fa-download"></i> Installieren</button>
-      </header>
+<!DOCTYPE html>
+<html lang="en" class="landing-page">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#18181b">
+  <meta name="description" content="TaxiOMeter by Talbergh - Professional taxi fare calculator with GPS tracking.">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="assets/images/icon-192.png">
+  <link rel="apple-touch-icon" href="assets/images/icon-192.png">
+  <link rel="stylesheet" href="assets/stylesheets/app.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/js/all.min.js" defer></script>
+  <title>TaxiOMeter - Professional Taxi Fare Calculator</title>
+</head>
+<body class="landing-page">
+  <header>
+    <h1><i class="fas fa-taxi icon"></i>TaxiOMeter</h1>
+    <p>Professional Taxi Fare Calculator</p>
+  </header>
+  
+  <main>
+    <section class="card fade-in">
+      <h2>🚕 Welcome to TaxiOMeter</h2>
+      <p>The most advanced mobile taxi meter application with real-time GPS tracking, interactive maps, and professional receipts.</p>
       
-      <!-- SCREEN CONTAINER -->
-      <main id="screenContainer" class="screens">
-        <!-- HOME (Map) -->
-        <section id="homeView" class="screen active" aria-label="Home">
-          <div class="map-wrapper">
-            <div id="map" class="map" aria-label="Karte"></div>
-            <div class="overlay top-right">
-              <button id="locateBtn" class="icon-btn" title="Position zentrieren"><i class="fa-solid fa-location-crosshairs"></i></button>
-            </div>
-            <div class="overlay stats-bar">
-              <div><span class="muted">km</span><strong id="distance">0.00</strong></div>
-              <div><span class="muted">Zeit</span><strong id="duration">00:00:00</strong></div>
-              <div><span class="muted">km/h</span><strong id="speed">0</strong></div>
-              <div class="price"><span class="muted">Preis</span>€<strong id="price">0.00</strong></div>
-            </div>
-            <div class="overlay controls-bar">
-              <div class="controls-row">
-                <button id="startBtn" class="primary"><i class="fa-solid fa-play"></i> Start</button>
-                <button id="pauseBtn" class="secondary" disabled><i class="fa-solid fa-pause"></i> Pause</button>
-                <button id="resumeBtn" class="secondary" disabled><i class="fa-solid fa-play"></i> Weiter</button>
-                <button id="stopBtn" class="danger" disabled><i class="fa-solid fa-stop"></i> Stop</button>
-              </div>
-              <p id="status" class="status" role="status">Bereit</p>
-            </div>
-          </div>
-        </section>
-
-        <!-- START SCREEN -->
-        <section id="startScreen" class="screen" aria-label="Fahrt starten">
-          <div class="flow-wrapper">
-            <h2><i class="fa-solid fa-flag-checkered" style="color:var(--accent);"></i> Fahrt starten</h2>
-            <label for="rideName" class="muted" style="margin-top:8px;">Name (optional)</label>
-            <input id="rideName" placeholder="z.B. Flughafen" class="flow-input" />
-            <div class="flow-actions">
-              <button id="cancelStart" class="ghost">Abbrechen</button>
-              <button id="confirmStart" class="primary"><i class="fa-solid fa-play"></i> Start</button>
-            </div>
-          </div>
-        </section>
-
-        <!-- SUMMARY SCREEN -->
-        <section id="summaryScreen" class="screen" aria-label="Fahrt Zusammenfassung">
-          <div class="flow-wrapper">
-            <h2><i class="fa-solid fa-clipboard-check" style="color:var(--accent);"></i> Zusammenfassung</h2>
-            <div class="grid-2" style="margin-top:12px;">
-              <div><span class="muted">Name</span><div id="mName">–</div></div>
-              <div><span class="muted">Dauer</span><div id="mDuration">–</div></div>
-              <div><span class="muted">Distanz</span><div><span id="mDistance">–</span> km</div></div>
-              <div><span class="muted">Ø km/h</span><div id="mAvg">–</div></div>
-            </div>
-            <div class="price-box" style="margin-top:16px;">
-              <div class="row"><span class="muted">Grundpreis</span><strong>€<span id="mBasePrice">0.00</span></strong></div>
-              <div class="row discount-row">
-                <span class="muted">Rabatt</span>
-                <div class="discount-inputs">
-                  <select id="discountMode">
-                    <option value="none">Keiner</option>
-                    <option value="percent">%</option>
-                    <option value="amount">€</option>
-                  </select>
-                  <input id="discountValue" type="number" step="0.01" min="0" value="0" />
-                </div>
-              </div>
-              <div class="row total"><span>Gesamt</span><strong>€<span id="mTotal">0.00</span></strong></div>
-            </div>
-            <div id="miniMap" class="mini-map" aria-label="Routenübersicht" style="margin-top:16px;"></div>
-            <div class="flow-actions" style="margin-top:16px;">
-              <button id="shareBtn" class="secondary"><i class="fa-solid fa-share-nodes"></i> Teilen</button>
-              <button id="resetBtn" class="ghost">Neu</button>
-              <button id="closeSummary" class="primary">Fertig</button>
-            </div>
-          </div>
-        </section>
-
-        <!-- HISTORY SCREEN -->
-        <section id="historyView" class="screen" aria-label="Verlauf">
-          <div class="list-wrapper">
-            <h2>Verlauf</h2>
-            <ul id="historyList" class="list"></ul>
-          </div>
-        </section>
-
-        <!-- SETTINGS SCREEN -->
-        <section id="settingsView" class="screen" aria-label="Einstellungen">
-          <div class="settings-wrapper">
-            <h2>Einstellungen</h2>
-            <div class="form-row">
-              <label for="rate">Preis pro km</label>
-              <div class="input-affix">
-                <input id="rate" type="number" inputmode="decimal" min="0" step="0.01" placeholder="1.50" />
-                <span class="affix">€/km</span>
-              </div>
-            </div>
-            <div class="form-row">
-              <label>Auto-Zoom</label>
-              <label class="switch">
-                <input id="autoZoom" type="checkbox" checked />
-                <span class="slider"></span>
-              </label>
-            </div>
-            <div class="form-row">
-              <label>Bildschirm an</label>
-              <label class="switch">
-                <input id="keepAwake" type="checkbox" checked />
-                <span class="slider"></span>
-              </label>
-            </div>
-            <div class="form-row">
-              <label>Jitter-Filter (m)</label>
-              <div class="input-affix">
-                <input id="jitter" type="number" inputmode="numeric" min="0" step="1" placeholder="3" />
-                <span class="affix">m</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- ONBOARDING SCREEN -->
-        <section id="onboardingScreen" class="screen" aria-label="Onboarding">
-          <div class="onboarding-flow">
-            <div class="ob-steps" data-step="1">
-              <div class="ob-step step-1 active">
-                <h2>Willkommen</h2>
-                <p>Dein professioneller GPS-Taxameter für präzise Fahrtenabrechnung.</p>
-                <div class="onboarding-progress"><div class="progress-dot active"></div><div class="progress-dot"></div><div class="progress-dot"></div><div class="progress-dot"></div></div>
-                <button id="obNext1" class="primary full"><i class="fa-solid fa-arrow-right"></i> Weiter</button>
-              </div>
-              <div class="ob-step step-2">
-                <h2>Standort</h2>
-                <p>Für exakte Distanzmessung benötigen wir deinen Standort (nur während Fahrten).</p>
-                <div class="onboarding-progress"><div class="progress-dot"></div><div class="progress-dot active"></div><div class="progress-dot"></div><div class="progress-dot"></div></div>
-                <div class="flow-actions">
-                  <button id="obBack2" class="ghost">Zurück</button>
-                  <button id="obRequestLocation" class="primary">Zugriff erlauben</button>
-                </div>
-              </div>
-              <div class="ob-step step-3">
-                <h2>Tarif</h2>
-                <p>Stelle deinen Preis pro Kilometer ein.</p>
-                <div class="input-affix" style="margin:16px 0;">
-                  <input id="onboardingRate" type="number" inputmode="decimal" min="0" step="0.01" placeholder="1.50" />
-                  <span class="affix">€/km</span>
-                </div>
-                <div class="onboarding-progress"><div class="progress-dot"></div><div class="progress-dot"></div><div class="progress-dot active"></div><div class="progress-dot"></div></div>
-                <div class="flow-actions">
-                  <button id="obBack3" class="ghost">Zurück</button>
-                  <button id="obNext3" class="primary">Weiter</button>
-                </div>
-              </div>
-              <div class="ob-step step-4">
-                <h2>Bereit!</h2>
-                <div class="tips-box">
-                  <ul>
-                    <li>Tippe auf Start und gib optional einen Fahrtnamen ein.</li>
-                    <li>Karte zeigt deine Route in Echtzeit.</li>
-                    <li>Pausiere bei Wartezeiten.</li>
-                    <li>Nach Stop erhältst du eine Zusammenfassung.</li>
-                  </ul>
-                </div>
-                <div class="onboarding-progress"><div class="progress-dot"></div><div class="progress-dot"></div><div class="progress-dot"></div><div class="progress-dot active"></div></div>
-                <button id="obFinish" class="success full"><i class="fa-solid fa-check"></i> Los geht's</button>
-              </div>
-            </div>
-          </div>
-        </section>
-      </main>
-
-      <nav class="tabbar safe-area-inset" id="tabbar">
-        <button class="tab active" data-target="homeView"><i class="fa-solid fa-house"></i><span>Home</span></button>
-        <button class="tab" data-target="historyView"><i class="fa-solid fa-clock-rotate-left"></i><span>Verlauf</span></button>
-        <button class="tab" data-target="settingsView"><i class="fa-solid fa-gear"></i><span>Einstellungen</span></button>
-      </nav>
-
-      <!-- Splash overlay -->
-      <div id="splash" class="splash">
-        <div class="splash-inner">
-          <i class="fa-solid fa-taxi splash-icon"></i>
-          <div class="splash-title">TaxiOMeter</div>
-          <div class="splash-sub">by Talbergh</div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 2rem 0;">
+        <div style="text-align: center;">
+          <i class="fas fa-map" style="font-size: 2rem; color: var(--accent); margin-bottom: 0.5rem;"></i>
+          <h4>Interactive Maps</h4>
+          <p style="font-size: 0.9rem; color: var(--text-secondary);">Real-time navigation with route tracking</p>
+        </div>
+        <div style="text-align: center;">
+          <i class="fas fa-qrcode" style="font-size: 2rem; color: var(--accent); margin-bottom: 0.5rem;"></i>
+          <h4>QR Receipts</h4>
+          <p style="font-size: 0.9rem; color: var(--text-secondary);">Professional digital receipts</p>
+        </div>
+        <div style="text-align: center;">
+          <i class="fas fa-globe" style="font-size: 2rem; color: var(--accent); margin-bottom: 0.5rem;"></i>
+          <h4>Multi-Language</h4>
+          <p style="font-size: 0.9rem; color: var(--text-secondary);">German & English support</p>
         </div>
       </div>
-    </div>
-
-    <script src="./app.js" type="module"></script>
-  </body>
-  </html>
+      
+      <a href="app.html" class="btn">
+        <i class="fas fa-play icon"></i>Launch TaxiOMeter
+      </a>
+      
+      <button class="btn secondary" id="install-btn" style="display: none;">
+        <i class="fas fa-download icon"></i>Install App
+      </button>
+    </section>
+    
+    <section class="card fade-in">
+      <h3>✨ Key Features</h3>
+      <ul style="list-style: none; padding: 0;">
+        <li style="margin: 0.75rem 0; display: flex; align-items: center;">
+          <i class="fas fa-location-dot" style="width: 1.5rem; color: var(--accent);"></i>
+          <span>Precise GPS tracking and distance calculation</span>
+        </li>
+        <li style="margin: 0.75rem 0; display: flex; align-items: center;">
+          <i class="fas fa-route" style="width: 1.5rem; color: var(--accent);"></i>
+          <span>Real-time route visualization on interactive maps</span>
+        </li>
+        <li style="margin: 0.75rem 0; display: flex; align-items: center;">
+          <i class="fas fa-calculator" style="width: 1.5rem; color: var(--accent);"></i>
+          <span>Customizable fare rates and discount options</span>
+        </li>
+        <li style="margin: 0.75rem 0; display: flex; align-items: center;">
+          <i class="fas fa-history" style="width: 1.5rem; color: var(--accent);"></i>
+          <span>Complete ride history with payment tracking</span>
+        </li>
+        <li style="margin: 0.75rem 0; display: flex; align-items: center;">
+          <i class="fas fa-mobile-screen" style="width: 1.5rem; color: var(--accent);"></i>
+          <span>Installable PWA - works offline</span>
+        </li>
+      </ul>
+    </section>
+    
+    <section class="card fade-in">
+      <h3>📱 Install as App</h3>
+      <p>For the best experience, install TaxiOMeter to your home screen:</p>
+      <ol style="color: var(--text-secondary); line-height: 1.6;">
+        <li>Open this page in Safari (iOS) or Chrome (Android)</li>
+        <li>Tap the share button or menu</li>
+        <li>Select "Add to Home Screen"</li>
+        <li>Enjoy the full app experience!</li>
+      </ol>
+      
+      <div style="text-align: center; margin: 2rem 0;">
+        <img src="assets/images/icon-192.png" alt="TaxiOMeter Icon" 
+             style="width: 80px; height: 80px; border-radius: 18px; box-shadow: var(--shadow);">
+      </div>
+    </section>
+    
+    <section class="card fade-in">
+      <h3>🔗 Share & Receipt</h3>
+      <p>Professional digital receipts with QR codes for easy sharing with customers.</p>
+      <a href="share.html" class="btn secondary">
+        <i class="fas fa-share-nodes icon"></i>View Sample Receipt
+      </a>
+    </section>
+  </main>
+  
+  <footer style="margin-top: 2rem; text-align: center; padding: 2rem; color: var(--text-secondary);">
+    <p>&copy; 2025 TaxiOMeter by Talbergh</p>
+    <p style="font-size: 0.8rem;">Professional taxi fare calculation made simple</p>
+  </footer>
+  
+  <script>
+    // Register Service Worker for PWA
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(console.error);
+    }
+    
+    // PWA Install functionality
+    let deferredPrompt;
+    const installBtn = document.getElementById('install-btn');
+    
+    window.addEventListener('beforeinstallprompt', (e) => {
+      // Prevent the mini-infobar from appearing on mobile
+      e.preventDefault();
+      // Stash the event so it can be triggered later
+      deferredPrompt = e;
+      // Show the install button
+      installBtn.style.display = 'inline-flex';
+    });
+    
+    installBtn.addEventListener('click', async () => {
+      if (!deferredPrompt) {
+        return;
+      }
+      // Show the install prompt
+      deferredPrompt.prompt();
+      // Wait for the user to respond to the prompt
+      const { outcome } = await deferredPrompt.userChoice;
+      console.log(`User response to the install prompt: ${outcome}`);
+      // Clear the deferredPrompt
+      deferredPrompt = null;
+      // Hide the install button
+      installBtn.style.display = 'none';
+    });
+    
+    // Add fade-in animation on scroll
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.animation = 'fadeIn 0.6s ease forwards';
+        }
+      });
+    }, observerOptions);
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.fade-in').forEach(el => {
+        observer.observe(el);
+      });
+    });
+  </script>
+</body>
+</html>

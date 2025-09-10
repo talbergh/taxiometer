@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#18181b">
+  <meta name="description" content="TaxiOMeter - Professional taxi fare calculator">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="assets/images/icon-192.png">
+  <link rel="apple-touch-icon" href="assets/images/icon-192.png">
+  <link rel="stylesheet" href="assets/stylesheets/app.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/js/all.min.js" defer></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <title>TaxiOMeter</title>
+</head>
+<body>
+  <!-- Onboarding -->
+  <div class="onboarding-container">
+    <div class="onboarding-step active">
+      <div class="onboarding-icon">
+        <i class="fas fa-taxi"></i>
+      </div>
+      <h1 class="onboarding-title" data-i18n="welcome">Willkommen</h1>
+      <p class="onboarding-description" data-i18n="welcomeDesc">TaxiOMeter hilft Ihnen bei der präzisen Fahrpreisberechnung mit GPS-Tracking.</p>
+      <div class="progress-dots">
+        <div class="dot active"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <button class="btn" id="onboarding-next-1" data-i18n="next">Weiter</button>
+    </div>
+    
+    <div class="onboarding-step">
+      <div class="onboarding-icon">
+        <i class="fas fa-location-dot"></i>
+      </div>
+      <h1 class="onboarding-title" data-i18n="location">Standort</h1>
+      <p class="onboarding-description" data-i18n="locationDesc">Für genaue Berechnungen benötigen wir Zugriff auf Ihren Standort.</p>
+      <div class="progress-dots">
+        <div class="dot active"></div>
+        <div class="dot active"></div>
+        <div class="dot"></div>
+      </div>
+      <button class="btn" id="onboarding-location" data-i18n="allowLocation">Standort erlauben</button>
+    </div>
+    
+    <div class="onboarding-step">
+      <div class="onboarding-icon">
+        <i class="fas fa-check-circle"></i>
+      </div>
+      <h1 class="onboarding-title" data-i18n="ready">Bereit</h1>
+      <p class="onboarding-description" data-i18n="readyDesc">Alles ist eingerichtet! Sie können jetzt Ihre erste Fahrt starten.</p>
+      <div class="progress-dots">
+        <div class="dot active"></div>
+        <div class="dot active"></div>
+        <div class="dot active"></div>
+      </div>
+      <button class="btn" id="onboarding-complete" data-i18n="getStarted">Los geht's</button>
+    </div>
+  </div>
+
+  <!-- Main App -->
+  <div class="app-container">
+    <main class="app-content">
+      <!-- Home Screen -->
+      <div class="screen active" id="home">
+        <div class="map-container">
+          <div id="map"></div>
+          <button class="btn map-start-btn" id="start-new-ride" data-i18n="newRide">Neue Fahrt starten</button>
+        </div>
+      </div>
+      
+      <!-- Start Ride Screen -->
+      <div class="screen" id="start-ride">
+        <div class="card">
+          <h2 data-i18n="startRide">Fahrt starten</h2>
+          
+          <div class="input-group">
+            <label for="ride-name" data-i18n="rideName">Fahrname (optional)</label>
+            <input type="text" id="ride-name" data-i18n="rideName">
+          </div>
+          
+          <div class="input-group">
+            <label for="destination" data-i18n="destination">Zieladresse</label>
+            <input type="text" id="destination" data-i18n="destination">
+          </div>
+          
+          <div class="input-group">
+            <label for="discount-type" data-i18n="discount">Rabatt</label>
+            <select id="discount-type">
+              <option value="none">Kein Rabatt</option>
+              <option value="percent" data-i18n="discountPercent">Prozent (%)</option>
+              <option value="amount" data-i18n="discountAmount">Betrag (€)</option>
+            </select>
+            <input type="number" id="discount-value" min="0" step="0.01" placeholder="0">
+          </div>
+          
+          <div class="btn-group">
+            <button class="btn success" id="start-ride-btn" data-i18n="start">Starten</button>
+            <button class="btn secondary" id="cancel-ride-btn" data-i18n="cancel">Abbrechen</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- End Ride Screen -->
+      <div class="screen" id="end-ride">
+        <div class="card">
+          <h2 data-i18n="rideComplete">Fahrt beendet</h2>
+          
+          <div style="text-align: center; margin: 2rem 0;">
+            <div style="font-size: 3rem; font-weight: bold; color: var(--accent);">
+              <span id="current-fare">0.00</span>€
+            </div>
+            <div style="font-size: 1.1rem; color: var(--text-secondary); margin-top: 0.5rem;">
+              <span id="current-distance">0.00</span> km • <span id="current-duration">0</span> min
+            </div>
+          </div>
+          
+          <div class="qr-container" id="qr-code"></div>
+          
+          <div class="btn-group">
+            <button class="btn" id="share-receipt-btn" data-i18n="shareReceipt">Quittung teilen</button>
+            <button class="btn danger" id="end-ride-btn" data-i18n="finishRide">Fahrt beenden</button>
+            <button class="btn secondary" onclick="window.app.resetRide()" data-i18n="cancel">Abbrechen</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- History Screen -->
+      <div class="screen" id="history">
+        <div id="history-list">
+          <!-- History items will be loaded here -->
+        </div>
+      </div>
+      
+      <!-- Settings Screen -->
+      <div class="screen" id="settings">
+        <div class="card">
+          <h2 data-i18n="settings">Einstellungen</h2>
+          
+          <div class="input-group">
+            <label for="language-select" data-i18n="language">Sprache</label>
+            <select id="language-select">
+              <option value="de">Deutsch</option>
+              <option value="en">English</option>
+            </select>
+          </div>
+          
+          <div class="input-group">
+            <label for="price-per-km" data-i18n="pricePerKm">Preis pro Kilometer</label>
+            <input type="number" id="price-per-km" min="0" step="0.01" value="1.50">
+          </div>
+          
+          <div class="input-group">
+            <label for="base-fare" data-i18n="baseFare">Grundgebühr</label>
+            <input type="number" id="base-fare" min="0" step="0.01" value="3.00">
+          </div>
+        </div>
+      </div>
+    </main>
+    
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+      <div class="nav-item active" data-screen="home">
+        <i class="fas fa-map"></i>
+        <span data-i18n="home">Karte</span>
+      </div>
+      <div class="nav-item" data-screen="history">
+        <i class="fas fa-clock-rotate-left"></i>
+        <span data-i18n="history">Verlauf</span>
+      </div>
+      <div class="nav-item" data-screen="settings">
+        <i class="fas fa-gear"></i>
+        <span data-i18n="settings">Einstellungen</span>
+      </div>
+    </nav>
+  </div>
+  
+  <script type="module" src="assets/javascripts/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,422 @@
+/* TaxiOMeter Main Stylesheet - app.css */
+
+/* TaxiOMeter Complete App Stylesheet */
+:root {
+  --primary: #18181b;
+  --accent: #0a84ff;
+  --bg: #101014;
+  --card: #23232a;
+  --danger: #ff453a;
+  --success: #32d74b;
+  --warning: #ff9500;
+  --radius: 22px;
+  --shadow: 0 2px 16px rgba(0,0,0,0.25);
+  --font: 'SF Pro Display', 'Segoe UI', 'Roboto', Arial, sans-serif;
+  --border: #222227;
+  --text: #f3f3f7;
+  --text-secondary: #8e8e93;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+  touch-action: manipulation;
+}
+
+/* Landing Page Styles */
+.landing-page {
+  overflow-y: auto;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.landing-page main {
+  padding: 1rem;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* App Layout */
+.app-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.app-content {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  transform: translateX(100%);
+  transition: all 0.3s ease;
+  overflow: auto;
+  padding: 1rem;
+}
+
+.screen.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.screen#home {
+  padding: 0; /* No padding for fullscreen map */
+}
+
+.bottom-nav {
+  display: flex;
+  background: var(--card);
+  border-top: 1px solid var(--border);
+  padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+.nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.75rem 0.5rem;
+  cursor: pointer;
+  transition: color 0.2s;
+  color: var(--text-secondary);
+}
+
+.nav-item.active {
+  color: var(--accent);
+}
+
+.nav-item i {
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.nav-item span {
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* Common Components */
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin-bottom: 1rem;
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  padding: 0.875rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  min-height: 44px;
+  width: 100%;
+  margin: 0.5rem 0;
+}
+
+.btn:active {
+  transform: scale(0.98);
+  background: #0060df;
+}
+
+.btn.danger {
+  background: var(--danger);
+}
+
+.btn.success {
+  background: var(--success);
+}
+
+.btn.secondary {
+  background: var(--border);
+  color: var(--text);
+}
+
+.btn-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-group .btn {
+  flex: 1;
+}
+
+.input-group {
+  margin-bottom: 1rem;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 0.875rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--primary);
+  color: var(--text);
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--accent);
+}
+
+/* Map Container */
+.map-container {
+  height: 100%;
+  border-radius: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+#map {
+  height: 100%;
+  width: 100%;
+}
+
+.map-start-btn {
+  position: absolute;
+  bottom: 100px; /* Above bottom nav */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  width: auto;
+  min-width: 200px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.map-overlay {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  z-index: 1000;
+}
+
+/* Onboarding */
+.onboarding-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--bg);
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  text-align: center;
+}
+
+.onboarding-step {
+  display: none;
+  animation: fadeIn 0.5s ease;
+}
+
+.onboarding-step.active {
+  display: block;
+}
+
+.onboarding-icon {
+  font-size: 4rem;
+  color: var(--accent);
+  margin-bottom: 2rem;
+}
+
+.onboarding-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.onboarding-description {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  line-height: 1.5;
+}
+
+.progress-dots {
+  display: flex;
+  gap: 0.5rem;
+  margin: 2rem 0;
+  justify-content: center;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: background 0.2s;
+  cursor: pointer;
+}
+
+.dot.active {
+  background: var(--accent);
+}
+
+/* QR Code */
+.qr-container {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.qr-container canvas {
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+/* History Items */
+.history-item {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.history-item:active {
+  background: var(--primary);
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.history-title {
+  font-weight: 600;
+  flex: 1;
+}
+
+.history-amount {
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.history-details {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.payment-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.payment-status.paid {
+  background: rgba(50, 215, 75, 0.2);
+  color: var(--success);
+}
+
+.payment-status.unpaid {
+  background: rgba(255, 69, 58, 0.2);
+  color: var(--danger);
+}
+
+.icon {
+  margin-right: 0.5em;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .card {
+    padding: 1rem;
+  }
+  
+  .btn {
+    padding: 0.75rem 1rem;
+  }
+  
+  .screen {
+    padding: 0.75rem;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease;
+}
+
+/* Hide scrollbars */
+::-webkit-scrollbar {
+  display: none;
+}
+
+* {
+  scrollbar-width: none;
+}
+
+/* iOS safe area */
+@supports(padding: max(0px)) {
+  .app-header {
+    padding-top: max(1rem, env(safe-area-inset-top));
+  }
+  
+  .bottom-nav {
+    padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+  }
+}

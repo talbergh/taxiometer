@@ -1,0 +1,27 @@
+{
+  "name": "TaxiOMeter Professional",
+  "short_name": "TaxiOMeter",
+  "description": "Professional taxi fare calculator with GPS tracking, interactive maps, and digital receipts.",
+  "start_url": "app.html",
+  "display": "standalone",
+  "background_color": "#101014",
+  "theme_color": "#18181b",
+  "orientation": "portrait",
+  "scope": ".",
+  "categories": ["business", "navigation", "productivity"],
+  "lang": ["en", "de"],
+  "icons": [
+    {
+      "src": "assets/images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
