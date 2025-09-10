@@ -9,7 +9,7 @@
   "orientation": "portrait",
   "scope": ".",
   "categories": ["business", "navigation", "productivity"],
-  "lang": "de",
+  "lang": ["de", "en"],
   "icons": [
     {
       "src": "assets/images/icon-192.png",

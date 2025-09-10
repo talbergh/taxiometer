@@ -39,7 +39,7 @@ export const i18n = (() => {
       cancel: 'Abbrechen',
       
       // End Ride
-      rideComplete: 'Fahrt beendet',
+      rideComplete: '<i class="fa-solid fa-flag-checkered"></i> Fahrt beendet',
       totalAmount: 'Gesamtbetrag',
       distance: 'Strecke',
       duration: 'Dauer',
@@ -104,7 +104,7 @@ export const i18n = (() => {
       cancel: 'Cancel',
       
       // End Ride
-      rideComplete: 'Ride Complete',
+      rideComplete: '<i class="fa-solid fa-flag-checkered"></i> Ride Complete',
       totalAmount: 'Total Amount',
       distance: 'Distance',
       duration: 'Duration',
@@ -150,14 +150,27 @@ export const i18n = (() => {
   function t(key) {
     return translations[currentLang]?.[key] || translations.de[key] || key;
   }
+
+  function stripTags(html) {
+    const tmp = document.createElement('div');
+    tmp.innerHTML = html;
+    return tmp.textContent || '';
+  }
   
   function updateUI() {
     document.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.getAttribute('data-i18n');
+      const value = t(key);
+
       if (el.tagName === 'INPUT' && el.type !== 'submit') {
-        el.placeholder = t(key);
+        el.placeholder = stripTags(value);
       } else {
-        el.textContent = t(key);
+        const looksLikeHTML = /<\/?[a-z][\s\S]*>/i.test(value);
+        if (el.hasAttribute('data-i18n-html') || looksLikeHTML) {
+          el.innerHTML = value;
+        } else {
+          el.textContent = value;
+        }
       }
     });
   }

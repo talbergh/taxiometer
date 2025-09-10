@@ -74,7 +74,6 @@ class TaxiOMeterApp {
     document.getElementById('cancel-ride-btn').onclick = () => Router.navigateTo('home');
     
     // End Ride Screen
-    document.getElementById('end-ride-btn').onclick = () => this.endRide();
     document.getElementById('share-receipt-btn').onclick = () => this.shareReceipt();
     
     // Settings
@@ -341,10 +340,7 @@ class TaxiOMeterApp {
     overlay.id = 'ride-info-overlay';
     overlay.className = 'map-overlay ride-info';
     overlay.innerHTML = `
-      <div><strong>Fahrt läuft</strong></div>
-      <div>Strecke: <span id="ride-distance-display">0.00</span> km</div>
-      <div>Zeit: <span id="ride-time-display">00:00</span></div>
-      <div>Preis: <span id="ride-price-display">€0.00</span></div>
+      <div><i class="fa-solid fa-road"></i> <span id="ride-distance-display">0.00</span> km <i class="fa-solid fa-clock"></i> Zeit: <span id="ride-time-display">00:00</span> <i class="fa-solid fa-euro-sign"></i> Preis: <span id="ride-price-display">€0.00</span></div>
     `;
     
     document.querySelector('.map-container').appendChild(overlay);
@@ -383,7 +379,7 @@ class TaxiOMeterApp {
     } else {
       this.rideDuration = this.ridePauseTime / 1000;
     }
-    
+    this.endRide()
     Router.navigateTo('end-ride');
     this.updateRideDisplay();
   }
@@ -434,9 +430,6 @@ class TaxiOMeterApp {
     
     // Update UI back to normal state
     this.updateRideActiveUI();
-    
-    // Show completion message
-    alert(i18n.t('rideComplete'));
   }
   
   updateRideDisplay() {
@@ -500,7 +493,7 @@ class TaxiOMeterApp {
     console.log('Share URL length:', shareUrl.length);
     
     // Generate smaller QR code for better scannability
-    QRModule.generateQR(shareUrl, 'qr-code', 140);
+    QRModule.generateQR(shareUrl, 'qr-code', 250);
   }
   
   shareReceipt() {

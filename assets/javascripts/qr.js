@@ -1,7 +1,7 @@
 // QR Code Generation Module
 export const QRModule = (() => {
   
-  function generateQR(data, containerId, size = 150) {
+  function generateQR(data, containerId, size = 250) {
     const container = document.getElementById(containerId);
     if (!container) {
       console.error('QR container not found:', containerId);
@@ -24,9 +24,9 @@ export const QRModule = (() => {
         text: data,
         width: size,
         height: size,
-        colorDark: '#18181b',
-        colorLight: '#ffffff',
-        correctLevel: QRCode.CorrectLevel.L // Lower error correction for smaller size
+        colorDark: '#ffffff',
+        colorLight: '#18181b',
+        correctLevel: QRCode.CorrectLevel.H // Lower error correction for smaller size
       });
       
       console.log('QR Code generated successfully');

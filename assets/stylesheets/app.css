@@ -262,15 +262,14 @@ input:focus, select:focus, textarea:focus {
 .map-start-btn {
   position: absolute;
   bottom: 160px; /* Higher above bottom nav for iPhone 15 compatibility */
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
+  right: 0;
+  margin: 0 auto; /* truly center horizontally */
+  transform: none;
   z-index: 1000;
-  width: auto;
+  width: min(280px, calc(100% - 40px)); /* keep 20px safe gutters */
   min-width: 200px;
-  max-width: 280px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-  /* Ensure button is in safe touch area for modern smartphones */
-  margin: 0 20px;
 }
 
 /* Additional mobile safety positioning for modern smartphones */
@@ -298,11 +297,15 @@ input:focus, select:focus, textarea:focus {
 }
 
 .ride-info {
+  position: absolute;
   top: 1rem;
-  left: 1rem;
+  left: 50%;
   right: auto;
-  min-width: 150px;
-  font-size: 0.9rem;
+  transform: translateX(-50%);
+  min-width: 350px;
+  max-width: fit-content;
+  font-size: 1rem;
+  text-align: center;
 }
 
 .ride-info div {
@@ -486,17 +489,21 @@ input:focus, select:focus, textarea:focus {
   align-items: center;
   margin: 2rem 0;
   padding: 1rem;
-  background: #ffffff;
-  border-radius: var(--radius);
   border: 2px solid var(--border);
 }
 
 .qr-container canvas,
 .qr-container img {
-  border-radius: var(--radius);
   box-shadow: var(--shadow);
   max-width: 100%;
+  padding: 10px;
+  background-color: transparent;
+  
   height: auto;
+}
+
+.qr-container canvas::after {
+  border-radius: var(--radius);
 }
 
 .qr-container p {
