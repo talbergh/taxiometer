@@ -6,7 +6,7 @@ export const i18n = (() => {
     de: {
       // Navigation
       home: 'Karte',
-      history: 'Verlauf',
+      zentrale: 'Zentrale',
       settings: 'Einstellungen',
       
       // Onboarding
@@ -51,7 +51,42 @@ export const i18n = (() => {
       currency: 'Währung',
       pricePerKm: 'Preis pro Kilometer',
       baseFare: 'Grundgebühr',
+  pricePerMinute: 'Preis pro Minute',
+  minimumFare: 'Mindestfahrpreis',
+  rounding: 'Rundung',
+  roundNone: 'Keine Rundung',
+  roundTo10: 'Auf 0,10€ runden',
+  roundTo50: 'Auf 0,50€ runden',
+  nightSurcharge: 'Nachtzuschlag (%)',
+  nightHours: 'Nachtzeit (Stunden)',
       driverName: 'Fahrername',
+      
+      // Zentrale & Statistics
+      totalRevenue: 'Gesamtumsatz',
+      totalTrips: 'Fahrten',
+      totalDistance: 'Strecke',
+      totalTime: 'Zeit',
+      allTime: 'Gesamt',
+      today: 'Heute',
+      thisWeek: 'Woche',
+      thisMonth: 'Monat',
+      revenueChart: 'Umsatz-Verlauf',
+      chartComingSoon: 'Grafische Auswertung folgt',
+      recentActivity: 'Letzte Aktivitäten',
+      viewAll: 'Alle anzeigen',
+      searchTrips: 'Fahrten suchen...',
+      allPayments: 'Alle Zahlungen',
+      paidOnly: 'Nur bezahlt',
+      unpaidOnly: 'Nur offen',
+      newestFirst: 'Neueste zuerst',
+      oldestFirst: 'Älteste zuerst',
+      highestAmount: 'Höchster Betrag',
+      lowestAmount: 'Niedrigster Betrag',
+      noTripsInPeriod: 'Keine Fahrten im gewählten Zeitraum',
+      avgTripValue: 'Ø Fahrtpreis',
+      avgDistance: 'Ø Strecke',
+      busyHours: 'Stoßzeiten',
+      revenueGrowth: 'Umsatzentwicklung',
       
       // History
       noRides: 'Noch keine Fahrten',
@@ -75,7 +110,7 @@ export const i18n = (() => {
     en: {
       // Navigation
       home: 'Map',
-      history: 'History',
+      zentrale: 'Control Center',
       settings: 'Settings',
       
       // Onboarding
@@ -116,6 +151,41 @@ export const i18n = (() => {
       currency: 'Currency',
       pricePerKm: 'Price per Kilometer',
       baseFare: 'Base Fare',
+  pricePerMinute: 'Price per Minute',
+  minimumFare: 'Minimum Fare',
+  rounding: 'Rounding',
+  roundNone: 'No rounding',
+  roundTo10: 'Round to €0.10',
+  roundTo50: 'Round to €0.50',
+  nightSurcharge: 'Night surcharge (%)',
+  nightHours: 'Night hours',
+      
+      // Zentrale & Statistics
+      totalRevenue: 'Total Revenue',
+      totalTrips: 'Trips',
+      totalDistance: 'Distance',
+      totalTime: 'Time',
+      allTime: 'All Time',
+      today: 'Today',
+      thisWeek: 'Week',
+      thisMonth: 'Month',
+      revenueChart: 'Revenue Chart',
+      chartComingSoon: 'Charts coming soon',
+      recentActivity: 'Recent Activity',
+      viewAll: 'View All',
+      searchTrips: 'Search trips...',
+      allPayments: 'All Payments',
+      paidOnly: 'Paid Only',
+      unpaidOnly: 'Unpaid Only',
+      newestFirst: 'Newest First',
+      oldestFirst: 'Oldest First',
+      highestAmount: 'Highest Amount',
+      lowestAmount: 'Lowest Amount',
+      noTripsInPeriod: 'No trips in selected period',
+      avgTripValue: 'Avg Trip Value',
+      avgDistance: 'Avg Distance',
+      busyHours: 'Busy Hours',
+      revenueGrowth: 'Revenue Growth',
       
       // History
       noRides: 'No rides yet',

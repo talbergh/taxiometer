@@ -45,8 +45,8 @@ export const Router = (() => {
       // Trigger screen-specific logic
       if (screenId === 'home' && window.app) {
         window.app.initHomeScreen();
-      } else if (screenId === 'history' && window.app) {
-        window.app.loadHistory();
+      } else if (screenId === 'zentrale' && window.app) {
+        window.app.loadZentrale();
       }
     }
   }

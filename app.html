@@ -97,47 +97,57 @@
       
       <!-- Start Ride Screen -->
       <div class="screen" id="start-ride">
-        <div class="card">
-          <h2 data-i18n="startRide">Fahrt starten</h2>
-          
-          <div class="input-group">
-            <label for="ride-name" data-i18n="rideName">Fahrname (optional)</label>
-            <input type="text" id="ride-name" data-i18n="rideName">
+        <div class="card card-elevated">
+          <div class="card-header">
+            <h2 class="card-title" data-i18n="startRide">Fahrt starten</h2>
           </div>
           
-          <div class="input-group">
-            <label for="destination" data-i18n="destination">Zieladresse</label>
-            <input type="text" id="destination" data-i18n="destination" autocomplete="off">
-            <div id="address-suggestions" class="address-suggestions"></div>
-          </div>
-          
-          <div class="input-group">
-            <label for="discount-type" data-i18n="discount">Rabatt</label>
-            <select id="discount-type">
-              <option value="none">Kein Rabatt</option>
-              <option value="percent" data-i18n="discountPercent">Prozent (%)</option>
-              <option value="amount" data-i18n="discountAmount">Betrag (€)</option>
-            </select>
-            <input type="number" id="discount-value" min="0" step="0.01" placeholder="0">
-          </div>
-          
-          <div class="btn-group">
-            <button class="btn success" id="start-ride-btn" data-i18n="start">Starten</button>
-            <button class="btn secondary" id="cancel-ride-btn" data-i18n="cancel">Abbrechen</button>
-          </div>
+          <form role="form" aria-label="Fahrt starten">
+            <div class="input-group">
+              <label for="ride-name" data-i18n="rideName">Fahrname (optional)</label>
+              <input type="text" id="ride-name" data-i18n="rideName" autocomplete="off" placeholder="z.B. Flughafen">
+            </div>
+            
+            <div class="input-group">
+              <label for="destination" data-i18n="destination">Zieladresse</label>
+              <input type="text" id="destination" data-i18n="destination" autocomplete="off" placeholder="Zieladresse eingeben" required>
+              <div id="address-suggestions" class="address-suggestions" role="listbox" aria-label="Adressvorschläge"></div>
+            </div>
+            
+            <div class="input-group">
+              <label for="discount-type" data-i18n="discount">Rabatt</label>
+              <select id="discount-type" aria-label="Rabatttyp">
+                <option value="none">Kein Rabatt</option>
+                <option value="percent" data-i18n="discountPercent">Prozent (%)</option>
+                <option value="amount" data-i18n="discountAmount">Betrag (€)</option>
+              </select>
+              <input type="number" id="discount-value" min="0" step="0.01" placeholder="0" aria-label="Rabattwert">
+            </div>
+            
+            <div class="btn-group">
+              <button type="submit" class="btn success" id="start-ride-btn" data-i18n="start">
+                <i class="fas fa-play icon"></i>Starten
+              </button>
+              <button type="button" class="btn outline" id="cancel-ride-btn" data-i18n="cancel">
+                <i class="fas fa-xmark icon"></i>Abbrechen
+              </button>
+            </div>
+          </form>
         </div>
       </div>
       
       <!-- End Ride Screen -->
       <div class="screen" id="end-ride">
-        <div class="card">
-          <h2 data-i18n="rideComplete">Fahrt beendet</h2>
+        <div class="card card-elevated">
+          <div class="card-header">
+            <h2 class="card-title" data-i18n="rideComplete">Fahrt beendet</h2>
+          </div>
           
-          <div style="text-align: center; margin: 2rem 0;">
-            <div style="font-size: 3rem; font-weight: bold; color: var(--accent);">
+          <div style="text-align: center; margin: var(--spacing-2xl) 0;">
+            <div class="text-large-title" style="color: var(--accent); margin-bottom: var(--spacing-sm);">
               <span id="current-fare">0.00</span>€
             </div>
-            <div style="font-size: 1.1rem; color: var(--text-secondary); margin-top: 0.5rem;">
+            <div class="text-subhead" style="color: var(--text-secondary);">
               <span id="current-distance">0.00</span> km • <span id="current-duration">0</span> min
             </div>
           </div>
@@ -145,16 +155,121 @@
           <div class="qr-container" id="qr-code"></div>
           
           <div class="btn-group">
-            <button class="btn" id="share-receipt-btn" data-i18n="shareReceipt">Quittung teilen</button>
-            <button class="btn secondary" onclick="window.app.resetRide()" data-i18n="next">Okay</button>
+            <button class="btn" id="share-receipt-btn" data-i18n="shareReceipt">
+              <i class="fas fa-share-nodes icon"></i>Quittung teilen
+            </button>
+            <button class="btn secondary" onclick="window.app.resetRide()" data-i18n="next">
+              <i class="fas fa-check icon"></i>Okay
+            </button>
           </div>
         </div>
       </div>
       
-      <!-- History Screen -->
-      <div class="screen" id="history">
-        <div id="history-list">
-          <!-- History items will be loaded here -->
+      <!-- Zentrale Screen -->
+      <div class="screen" id="zentrale">
+        <!-- Statistics Overview -->
+        <div class="zentrale-stats">
+          <div class="stats-grid">
+            <div class="stat-card revenue">
+              <div class="stat-icon">
+                <i class="fas fa-euro-sign"></i>
+              </div>
+              <div class="stat-content">
+                <div class="stat-value" id="total-revenue">0,00€</div>
+                <div class="stat-label" data-i18n="totalRevenue">Gesamtumsatz</div>
+              </div>
+            </div>
+            
+            <div class="stat-card trips">
+              <div class="stat-icon">
+                <i class="fas fa-car"></i>
+              </div>
+              <div class="stat-content">
+                <div class="stat-value" id="total-trips">0</div>
+                <div class="stat-label" data-i18n="totalTrips">Fahrten</div>
+              </div>
+            </div>
+            
+            <div class="stat-card distance">
+              <div class="stat-icon">
+                <i class="fas fa-route"></i>
+              </div>
+              <div class="stat-content">
+                <div class="stat-value" id="total-distance">0 km</div>
+                <div class="stat-label" data-i18n="totalDistance">Strecke</div>
+              </div>
+            </div>
+            
+            <div class="stat-card time">
+              <div class="stat-icon">
+                <i class="fas fa-clock"></i>
+              </div>
+              <div class="stat-content">
+                <div class="stat-value" id="total-time">0h 0m</div>
+                <div class="stat-label" data-i18n="totalTime">Zeit</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Period Selection -->
+        <div class="zentrale-periods">
+          <div class="period-selector">
+            <button class="period-btn active" data-period="all" data-i18n="allTime">Gesamt</button>
+            <button class="period-btn" data-period="today" data-i18n="today">Heute</button>
+            <button class="period-btn" data-period="week" data-i18n="thisWeek">Woche</button>
+            <button class="period-btn" data-period="month" data-i18n="thisMonth">Monat</button>
+          </div>
+        </div>
+
+        <!-- Analytics Charts Placeholder -->
+        <div class="zentrale-charts">
+          <div class="chart-card">
+            <div class="chart-header">
+              <h3 data-i18n="revenueChart">Umsatz-Verlauf</h3>
+              <div class="chart-period" id="chart-period-display">Gesamt</div>
+            </div>
+            <div class="chart-placeholder">
+              <i class="fas fa-chart-line"></i>
+              <span data-i18n="chartComingSoon">Grafische Auswertung folgt</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="zentrale-activity">
+          <div class="activity-header">
+            <h3 data-i18n="recentActivity">Letzte Aktivitäten</h3>
+            <button class="view-all-btn" onclick="app.toggleHistoryView()" data-i18n="viewAll">Alle anzeigen</button>
+          </div>
+          <div id="zentrale-history-preview">
+            <!-- Recent trips will be loaded here -->
+          </div>
+        </div>
+
+        <!-- Detailed History (collapsible) -->
+        <div class="zentrale-detailed-history" id="detailed-history" style="display: none;">
+          <div class="history-controls">
+            <div class="search-filter">
+              <input type="text" id="history-search" placeholder="Fahrten suchen..." data-i18n-placeholder="searchTrips">
+              <select id="payment-filter">
+                <option value="all" data-i18n="allPayments">Alle Zahlungen</option>
+                <option value="paid" data-i18n="paidOnly">Nur bezahlt</option>
+                <option value="unpaid" data-i18n="unpaidOnly">Nur offen</option>
+              </select>
+            </div>
+            <div class="sort-options">
+              <select id="sort-history">
+                <option value="newest" data-i18n="newestFirst">Neueste zuerst</option>
+                <option value="oldest" data-i18n="oldestFirst">Älteste zuerst</option>
+                <option value="amount-high" data-i18n="highestAmount">Höchster Betrag</option>
+                <option value="amount-low" data-i18n="lowestAmount">Niedrigster Betrag</option>
+              </select>
+            </div>
+          </div>
+          <div id="zentrale-history-full">
+            <!-- Full history will be loaded here -->
+          </div>
         </div>
       </div>
       
@@ -164,74 +279,206 @@
           <div class="tab-buttons">
             <button class="tab-btn active" data-tab="general">Allgemein</button>
             <button class="tab-btn" data-tab="libraries">Bibliotheken</button>
+            <button class="tab-btn" data-tab="diagnostics">Diagnose</button>
           </div>
           
           <div class="tab-content active" id="general-tab">
             <div class="card">
-              <h2 data-i18n="settings">Einstellungen</h2>
-              
-              <div class="input-group">
-                <label for="language-select" data-i18n="language">Sprache</label>
-                <select id="language-select">
-                  <option value="de">Deutsch</option>
-                  <option value="en">English</option>
-                </select>
+              <div class="card-header">
+                <h2 class="card-title" data-i18n="settings">Einstellungen</h2>
               </div>
               
-              <div class="input-group">
-                <label for="price-per-km" data-i18n="pricePerKm">Preis pro Kilometer</label>
-                <input type="number" id="price-per-km" min="0" step="0.01" value="1.50">
-              </div>
-              
-              <div class="input-group">
-                <label for="base-fare" data-i18n="baseFare">Grundgebühr</label>
-                <input type="number" id="base-fare" min="0" step="0.01" value="3.00">
-              </div>
-              
-              <div class="input-group">
-                <label for="driver-name-setting" data-i18n="driverName">Fahrername</label>
-                <input type="text" id="driver-name-setting" placeholder="Ihr Name">
-              </div>
+              <form role="form" aria-label="Einstellungen">
+                <div class="input-group">
+                  <label for="language-select" data-i18n="language">Sprache</label>
+                  <select id="language-select" aria-label="Sprache auswählen">
+                    <option value="de">🇩🇪 Deutsch</option>
+                    <option value="en">🇺🇸 English</option>
+                  </select>
+                </div>
+                
+                <div class="input-group">
+                  <label for="price-per-km" data-i18n="pricePerKm">Preis pro Kilometer</label>
+                  <input type="number" id="price-per-km" min="0" step="0.01" value="1.50" aria-label="Preis pro Kilometer in Euro">
+                </div>
+                
+                <div class="input-group">
+                  <label for="base-fare" data-i18n="baseFare">Grundgebühr</label>
+                  <input type="number" id="base-fare" min="0" step="0.01" value="3.00" aria-label="Grundgebühr in Euro">
+                </div>
+
+                <div class="input-group">
+                  <label for="price-per-minute" data-i18n="pricePerMinute">Preis pro Minute</label>
+                  <input type="number" id="price-per-minute" min="0" step="0.01" value="0.00" aria-label="Preis pro Minute in Euro">
+                </div>
+
+                <div class="input-group">
+                  <label for="minimum-fare" data-i18n="minimumFare">Mindestfahrpreis</label>
+                  <input type="number" id="minimum-fare" min="0" step="0.01" value="0.00" aria-label="Mindestfahrpreis in Euro">
+                </div>
+
+                <div class="input-group">
+                  <label for="rounding" data-i18n="rounding">Rundung</label>
+                  <select id="rounding" aria-label="Rundungsmodus">
+                    <option value="none" data-i18n="roundNone">Keine Rundung</option>
+                    <option value="nearest-0.10" data-i18n="roundTo10">Auf 0,10€ runden</option>
+                    <option value="nearest-0.50" data-i18n="roundTo50">Auf 0,50€ runden</option>
+                  </select>
+                </div>
+
+                <div class="input-group">
+                  <label for="night-surcharge" data-i18n="nightSurcharge">Nachtzuschlag (%)</label>
+                  <input type="number" id="night-surcharge" min="0" max="100" step="1" value="0" aria-label="Nachtzuschlag in Prozent">
+                </div>
+
+                <div class="input-group">
+                  <label data-i18n="nightHours">Nachtzeit (Stunden)</label>
+                  <div style="display:flex; gap: var(--spacing-sm);">
+                    <input type="number" id="night-start" min="0" max="23" step="1" value="22" aria-label="Nacht Startzeit">
+                    <span style="display:flex; align-items:center; color: var(--text-secondary); font-size: var(--font-size-subhead);">bis</span>
+                    <input type="number" id="night-end" min="0" max="23" step="1" value="6" aria-label="Nacht Endzeit">
+                  </div>
+                </div>
+                
+                <div class="input-group">
+                  <label for="driver-name-setting" data-i18n="driverName">Fahrername</label>
+                  <input type="text" id="driver-name-setting" placeholder="Ihr Name" aria-label="Fahrername für Quittungen">
+                </div>
+              </form>
             </div>
           </div>
           
           <div class="tab-content" id="libraries-tab">
             <div class="card">
-              <h2>Verwendete Bibliotheken</h2>
+              <div class="card-header">
+                <h2 class="card-title">Verwendete Bibliotheken</h2>
+                <p class="text-subhead" style="color: var(--text-secondary); margin: var(--spacing-sm) 0 0 0;">
+                  Open Source Komponenten die diese App ermöglichen
+                </p>
+              </div>
               <div class="libraries-list">
                 <div class="library-item">
                   <h3>Leaflet.js</h3>
                   <p>Version: 1.9.4</p>
-                  <p>Interactive maps for the web</p>
-                  <a href="https://leafletjs.com/" target="_blank">leafletjs.com</a>
+                  <p>Interaktive Karten für das Web</p>
+                  <a href="https://leafletjs.com/" target="_blank" rel="noopener noreferrer">leafletjs.com</a>
                 </div>
                 
                 <div class="library-item">
                   <h3>QRCode.js</h3>
                   <p>Version: Local</p>
-                  <p>QR code generation library</p>
-                  <a href="https://davidshimjs.github.io/qrcodejs/" target="_blank">davidshimjs.github.io/qrcodejs</a>
+                  <p>QR Code Generierung</p>
+                  <a href="https://davidshimjs.github.io/qrcodejs/" target="_blank" rel="noopener noreferrer">davidshimjs.github.io/qrcodejs</a>
                 </div>
                 
                 <div class="library-item">
                   <h3>jQuery</h3>
                   <p>Version: 3.7.1</p>
-                  <p>Fast, small, and feature-rich JavaScript library</p>
-                  <a href="https://jquery.com/" target="_blank">jquery.com</a>
+                  <p>JavaScript Bibliothek</p>
+                  <a href="https://jquery.com/" target="_blank" rel="noopener noreferrer">jquery.com</a>
                 </div>
                 
                 <div class="library-item">
                   <h3>Font Awesome</h3>
                   <p>Version: 7.0.1</p>
-                  <p>Icon library and toolkit</p>
-                  <a href="https://fontawesome.com/" target="_blank">fontawesome.com</a>
+                  <p>Icon Bibliothek</p>
+                  <a href="https://fontawesome.com/" target="_blank" rel="noopener noreferrer">fontawesome.com</a>
                 </div>
                 
                 <div class="library-item">
                   <h3>OpenStreetMap Nominatim</h3>
-                  <p>Address geocoding service</p>
-                  <p>Free address search API</p>
-                  <a href="https://nominatim.openstreetmap.org/" target="_blank">nominatim.openstreetmap.org</a>
+                  <p>Adress Geocoding Service</p>
+                  <p>Kostenlose Adresssuche API</p>
+                  <a href="https://nominatim.openstreetmap.org/" target="_blank" rel="noopener noreferrer">nominatim.openstreetmap.org</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Diagnostics Tab -->
+          <div class="tab-content" id="diagnostics-tab">
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title">🔧 System-Diagnose</h2>
+              </div>
+              
+              <div class="diagnostics-info">
+                <div class="diagnostic-section">
+                  <h3>📱 Speicher-Status</h3>
+                  <div class="diagnostic-item">
+                    <span>LocalStorage verfügbar:</span>
+                    <span id="storage-available">Prüfe...</span>
+                  </div>
+                  <div class="diagnostic-item">
+                    <span>Fahrten gespeichert:</span>
+                    <span id="trips-count">Prüfe...</span>
+                  </div>
+                  <div class="diagnostic-item">
+                    <span>Fahrername:</span>
+                    <span id="driver-name-status">Prüfe...</span>
+                  </div>
+                  <div class="diagnostic-item">
+                    <span>Onboarding abgeschlossen:</span>
+                    <span id="onboarding-status">Prüfe...</span>
+                  </div>
+                  <div class="diagnostic-item">
+                    <span>Speicherplatz belegt:</span>
+                    <span id="storage-used">Prüfe...</span>
+                  </div>
+                </div>
+                
+                <div class="diagnostic-section">
+                  <h3>🌐 Browser-Info</h3>
+                  <div class="diagnostic-item">
+                    <span>Browser:</span>
+                    <span id="browser-info">Prüfe...</span>
+                  </div>
+                  <div class="diagnostic-item">
+                    <span>Plattform:</span>
+                    <span id="platform-info">Prüfe...</span>
+                  </div>
+                  <div class="diagnostic-item">
+                    <span>PWA-Modus:</span>
+                    <span id="pwa-status">Prüfe...</span>
+                  </div>
+                </div>
+                
+                <div class="diagnostic-section">
+                  <h3>📍 GPS & Berechtigungen</h3>
+                  <div class="diagnostic-item">
+                    <span>Geolocation verfügbar:</span>
+                    <span id="geolocation-available">Prüfe...</span>
+                  </div>
+                  <div class="diagnostic-item">
+                    <span>GPS-Berechtigung:</span>
+                    <span id="gps-permission">Prüfe...</span>
+                  </div>
+                </div>
+                
+                <div class="diagnostic-actions">
+                  <button class="btn secondary" onclick="app.runDiagnostics()" id="refresh-diagnostics">
+                    <i class="fas fa-refresh"></i> Diagnose aktualisieren
+                  </button>
+                  <button class="btn secondary" onclick="app.exportStorageData()">
+                    <i class="fas fa-download"></i> Daten exportieren
+                  </button>
+                  <button class="btn secondary" onclick="app.optimizeStorage()">
+                    <i class="fas fa-broom"></i> Speicher optimieren
+                  </button>
+                  <button class="btn danger" onclick="app.resetApp()">
+                    <i class="fas fa-trash"></i> App zurücksetzen
+                  </button>
+                </div>
+                
+                <div class="diagnostic-help">
+                  <h4>🚨 Android-Probleme beheben:</h4>
+                  <ul>
+                    <li>Schließen Sie den <strong>privaten Modus</strong></li>
+                    <li>Aktivieren Sie <strong>Cookies</strong> in den Browser-Einstellungen</li>
+                    <li>Löschen Sie den <strong>Browser-Cache</strong> nicht</li>
+                    <li>Installieren Sie die App als <strong>PWA</strong> (Zum Startbildschirm hinzufügen)</li>
+                    <li>Verwenden Sie <strong>Chrome</strong> statt Samsung Browser</li>
+                  </ul>
                 </div>
               </div>
             </div>
@@ -246,9 +493,9 @@
         <i class="fas fa-map"></i>
         <span data-i18n="home">Karte</span>
       </div>
-      <div class="nav-item" data-screen="history">
-        <i class="fas fa-clock-rotate-left"></i>
-        <span data-i18n="history">Verlauf</span>
+            <div class="nav-item" data-screen="zentrale">
+        <i class="fas fa-chart-pie"></i>
+        <span data-i18n="zentrale">Zentrale</span>
       </div>
       <div class="nav-item" data-screen="settings">
         <i class="fas fa-gear"></i>
