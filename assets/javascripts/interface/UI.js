@@ -1,4 +1,4 @@
-// UI Module for TaxiOMeter
+// UI Module for Cabra
 export const UI = (() => {
   function showError(msg) {
     const el = document.getElementById('error-msg');

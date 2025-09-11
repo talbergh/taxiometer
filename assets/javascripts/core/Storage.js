@@ -1,6 +1,6 @@
-// LocalStorage Trip History Module for TaxiOMeter
+// LocalStorage Trip History Module for Cabra
 export const Storage = (() => {
-  const KEY = 'taxiometer_trips';
+  const KEY = 'cabra_trips';
 
   function saveTrip(trip) {
     const trips = getTrips();

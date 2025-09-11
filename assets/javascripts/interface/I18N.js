@@ -11,7 +11,7 @@ export const i18n = (() => {
       
       // Onboarding
       welcome: 'Willkommen',
-      welcomeDesc: 'TaxiOMeter hilft Ihnen bei der präzisen Fahrpreisberechnung mit GPS-Tracking.',
+      welcomeDesc: 'Cabra hilft Ihnen bei der präzisen Fahrpreisberechnung mit GPS-Tracking.',
       privacy: 'Datenschutz',
       privacyDesc: 'Ihre Privatsphäre ist uns wichtig. Alle Daten werden nur lokal auf Ihrem Gerät gespeichert. Es werden keine Daten an externe Server übertragen oder gesammelt.',
       location: 'Standort',
@@ -80,7 +80,7 @@ export const i18n = (() => {
       
       // Onboarding
       welcome: 'Welcome',
-      welcomeDesc: 'TaxiOMeter helps you calculate precise taxi fares using GPS tracking.',
+      welcomeDesc: 'Cabra helps you calculate precise taxi fares using GPS tracking.',
       location: 'Location',
       locationDesc: 'We need access to your location for accurate calculations.',
       ready: 'Ready',

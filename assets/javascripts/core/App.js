@@ -1,16 +1,16 @@
-// TaxiOMeter Complete App Logic
-import { GPS } from './gps.js';
-import { Fare } from './fare.js';
-import { Storage } from './storage.js';
-import { UI } from './ui.js';
-import { i18n } from './i18n.js';
-import { MapModule } from './map.js';
-import { Router } from './router.js';
-import { QRModule } from './qr.js';
-import { Onboarding } from './onboarding.js';
-import { AddressAutocomplete } from './autocomplete.js';
+// Cabra Complete App Logic
+import { GPS } from '../map/GPS.js';
+import { Fare } from '../map/FareCalculator.js';
+import { Storage } from './Storage.js';
+import { UI } from '../interface/UI.js';
+import { i18n } from '../interface/I18N.js';
+import { MapModule } from '../map/Map.js';
+import { Router } from "./Router.js"
+import { QRModule } from '../interface/QRCode.js';
+import { Onboarding } from '../interface/screens/Onboarding.js';
+import { AddressAutocomplete } from '../interface/AutoComplete.js';
 
-class TaxiOMeterApp {
+class CabraApp {
   constructor() {
     this.currentRide = null;
     this.rideActive = false;
@@ -151,7 +151,7 @@ class TaxiOMeterApp {
   showLocationDeniedMessage() {
     // Show a one-time message about GPS being needed
     if (!localStorage.getItem('gps_warning_shown')) {
-      alert('TaxiOMeter works best with location access enabled. You can still use the app manually, but distance tracking will not be available.');
+      alert('Cabra works best with location access enabled. You can still use the app manually, but distance tracking will not be available.');
       localStorage.setItem('gps_warning_shown', 'true');
     }
   }
@@ -558,7 +558,7 @@ class TaxiOMeterApp {
     const trip = trips.find(t => t.id === rideId);
     if (trip) {
       trip.paid = !trip.paid;
-      localStorage.setItem('taxiometer_trips', JSON.stringify(trips));
+      localStorage.setItem('cabra_trips', JSON.stringify(trips));
       this.loadHistory();
     }
   }
@@ -606,10 +606,10 @@ class TaxiOMeterApp {
 document.addEventListener('DOMContentLoaded', () => {
   // Register Service Worker
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js');
+    navigator.serviceWorker.register('ServiceWorker.js');
   }
   
   // Initialize app
-  window.app = new TaxiOMeterApp();
+  window.app = new CabraApp();
   window.app.init();
 });

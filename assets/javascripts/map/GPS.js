@@ -1,4 +1,4 @@
-// GPS Module for TaxiOMeter
+// GPS Module for Cabra
 export const GPS = (() => {
   let watchId = null;
   let lastPosition = null;

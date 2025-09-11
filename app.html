@@ -4,28 +4,28 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#18181b">
-  <meta name="description" content="TaxiOMeter - Professional taxi fare calculator">
+  <meta name="description" content="Cabra - Professional taxi fare calculator">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="assets/images/icon-192.png">
   <link rel="apple-touch-icon" href="assets/images/icon-192.png">
-  <link rel="stylesheet" href="assets/stylesheets/app.css">
-  <link rel="stylesheet" href="assets/stylesheets/leaflet.min.css">
-  <link rel="stylesheet" href="assets/stylesheets/fontawesome.min.css">
-  <script src="assets/javascripts/fontawesome.min.js" defer></script>
-  <script src="assets/javascripts/leaflet.min.js"></script>
-  <script src="assets/javascripts/jquery.min.js"></script>
-  <script src="assets/javascripts/qrcode.min.js"></script>
-  <title>TaxiOMeter</title>
+  <link rel="stylesheet" href="assets/stylesheets/App.css">
+  <link rel="stylesheet" href="assets/stylesheets/library/Leaflet.min.css">
+  <link rel="stylesheet" href="assets/stylesheets/library/FontAwesome.min.css">
+  <script src="assets/javascripts/library/FontAwesome.min.js" defer></script>
+  <script src="assets/javascripts/library/Leaflet.min.js"></script>
+  <script src="assets/javascripts/library/JQuery.min.js"></script>
+  <script src="assets/javascripts/library/QRCode.min.js"></script>
+  <title>Cabra</title>
 </head>
 <body>
   <!-- Onboarding -->
   <div class="onboarding-container">
     <div class="onboarding-step active">
       <div class="onboarding-icon">
-        <img src="assets/images/welcome.svg" alt="Welcome" width="120" height="120">
+        <img src="assets/images/svgs/welcome.svg" alt="Welcome" width="120" height="120">
       </div>
       <h1 class="onboarding-title" data-i18n="welcome">Willkommen</h1>
-      <p class="onboarding-description" data-i18n="welcomeDesc">TaxiOMeter hilft Ihnen bei der präzisen Fahrpreisberechnung mit GPS-Tracking.</p>
+      <p class="onboarding-description" data-i18n="welcomeDesc">Cabra hilft Ihnen bei der präzisen Fahrpreisberechnung mit GPS-Tracking.</p>
       <div class="progress-dots">
         <div class="dot active"></div>
         <div class="dot"></div>
@@ -37,7 +37,7 @@
     
     <div class="onboarding-step">
       <div class="onboarding-icon">
-        <img src="assets/images/personal_data.svg" alt="Privacy" width="120" height="120">
+        <img src="assets/images/svgs/personal_data.svg" alt="Privacy" width="120" height="120">
       </div>
       <h1 class="onboarding-title" data-i18n="privacy">Datenschutz</h1>
       <p class="onboarding-description" data-i18n="privacyDesc">Ihre Privatsphäre ist uns wichtig. Alle Daten werden nur lokal auf Ihrem Gerät gespeichert. Es werden keine Daten an externe Server übertragen oder gesammelt.</p>
@@ -52,7 +52,7 @@
     
     <div class="onboarding-step">
       <div class="onboarding-icon">
-        <img src="assets/images/gps.svg" alt="Location" width="120" height="120">
+        <img src="assets/images/svgs/gps.svg" alt="Location" width="120" height="120">
       </div>
       <h1 class="onboarding-title" data-i18n="location">Standort</h1>
       <p class="onboarding-description" data-i18n="locationDesc">Für genaue Berechnungen benötigen wir Zugriff auf Ihren Standort.</p>
@@ -67,7 +67,7 @@
     
     <div class="onboarding-step">
       <div class="onboarding-icon">
-        <img src="assets/images/earn.svg" alt="Setup" width="120" height="120">
+        <img src="assets/images/svgs/earn.svg" alt="Setup" width="120" height="120">
       </div>
       <h1 class="onboarding-title" data-i18n="setup">Einrichtung</h1>
       <p class="onboarding-description" data-i18n="setupDesc">Bitte geben Sie Ihren Namen ein. Dieser erscheint auf den Quittungen für Ihre Fahrgäste.</p>
@@ -257,6 +257,6 @@
     </nav>
   </div>
   
-  <script type="module" src="assets/javascripts/app.js"></script>
+  <script type="module" src="assets/javascripts/core/App.js"></script>
 </body>
 </html>

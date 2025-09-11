@@ -1,4 +1,4 @@
-// Fare Calculation Module for TaxiOMeter (no per-minute charges)
+// Fare Calculation Module for Cabra (no per-minute charges)
 export const Fare = (() => {
   let baseFare = 3.0; // default base fare
   let perKm = 1.5;    // default per km
