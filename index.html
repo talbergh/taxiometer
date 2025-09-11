@@ -3,562 +3,176 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Cabra Professional - Die professionelle Lösung für präzise Taxi-Fahrpreisberechnung mit GPS-Tracking, interaktiven Karten und digitalen Belegen.">
-  <meta name="keywords" content="Taxi, Fahrpreisberechnung, GPS, Tracking, Professional, Cabra">
-  <meta name="author" content="Talbergh">
+  <meta name="description" content="Cabra - Der professionelle Taxi-Fahrpreisrechner mit GPS-Tracking und digitalen Quittungen">
   <meta name="theme-color" content="#18181b">
-  
-  <!-- Open Graph Meta Tags -->
-  <meta property="og:title" content="Cabra Professional - Professionelle Taxi-Fahrpreisberechnung">
-  <meta property="og:description" content="Die professionelle Lösung für präzise Taxi-Fahrpreisberechnung mit GPS-Tracking und digitalen Belegen.">
-  <meta property="og:type" content="website">
-  <meta property="og:image" content="assets/images/icon-512.png">
-  
-  <!-- Favicons -->
   <link rel="icon" href="assets/images/icon-192.png">
   <link rel="apple-touch-icon" href="assets/images/icon-192.png">
-  
-  <!-- Stylesheets -->
-  <link rel="stylesheet" href="assets/stylesheets/Landing.css">
   <link rel="stylesheet" href="assets/stylesheets/library/FontAwesome.min.css">
-  
-  <!-- GSAP Animation Library -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
-  
-  <title>Cabra Professional - Professionelle Taxi-Fahrpreisberechnung</title>
+  <link rel="stylesheet" href="assets/stylesheets/Landing.css">
+  <title>Cabra - Taxi-Fahrpreisrechner</title>
 </head>
 <body>
   <!-- Navigation -->
   <nav class="navbar">
     <div class="nav-container">
       <div class="nav-brand">
-        <i class="fas fa-taxi"></i>
-        <span>Cabra</span>
-        <span class="pro-badge">Professional</span>
+        <img src="assets/images/icon-192.png" alt="Cabra Logo" class="nav-logo">
+  <span class="nav-title">Cabra</span>
       </div>
       <div class="nav-links">
-        <a href="#features">Features</a>
-        <a href="#benefits">Vorteile</a>
-        <a href="#download">Download</a>
-        <a href="#contact">Kontakt</a>
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#about" class="nav-link">Über uns</a>
+        <a href="#contact" class="nav-link">Kontakt</a>
+        <a href="app.html" class="btn btn-primary">App starten</a>
       </div>
-      <div class="nav-mobile">
-        <button class="mobile-menu-btn" id="mobileMenuBtn">
-          <i class="fas fa-bars"></i>
-        </button>
-      </div>
+      <button class="mobile-menu-toggle" aria-label="Menü öffnen">
+        <i class="fas fa-bars"></i>
+      </button>
     </div>
   </nav>
-
-  <!-- Mobile Menu -->
-  <div class="mobile-menu" id="mobileMenu">
-    <a href="#features">Features</a>
-    <a href="#benefits">Vorteile</a>
-    <a href="#download">Download</a>
-    <a href="#contact">Kontakt</a>
-  </div>
 
   <!-- Hero Section -->
   <section class="hero">
     <div class="hero-container">
       <div class="hero-content">
-        <h1 class="hero-title">
-          Professionelle Taxi-Fahrpreisberechnung
-          <span class="gradient-text">neu definiert</span>
-        </h1>
-        <p class="hero-description">
-          Cabra Professional bietet präzise GPS-basierte Fahrpreisberechnung, 
-          interaktive Karten und digitale Belege für moderne Taxi-Unternehmen.
-        </p>
-        <div class="hero-actions">
-          <a href="app.html" class="btn btn-primary">
+        <h1 class="hero-title">Professionelle Taxi-Fahrpreisberechnung</h1>
+        <p class="hero-subtitle">Präzise GPS-Tracking, transparente Abrechnung und digitale Quittungen für moderne Taxiunternehmen</p>
+        <div class="hero-buttons">
+          <a href="app.html" class="btn btn-primary btn-large">
             <i class="fas fa-rocket"></i>
             Jetzt starten
           </a>
-          <a href="#features" class="btn btn-secondary">
-            <i class="fas fa-play"></i>
+          <a href="#features" class="btn btn-secondary btn-large">
+            <i class="fas fa-info-circle"></i>
             Mehr erfahren
           </a>
         </div>
-        <div class="hero-stats">
-          <div class="stat">
-            <span class="stat-number">99.9%</span>
-            <span class="stat-label">Genauigkeit</span>
-          </div>
-          <div class="stat">
-            <span class="stat-number">24/7</span>
-            <span class="stat-label">Verfügbarkeit</span>
-          </div>
-          <div class="stat">
-            <span class="stat-number">∞</span>
-            <span class="stat-label">Fahrten</span>
-          </div>
-        </div>
       </div>
       <div class="hero-visual">
-        <div class="app-showcase">
-          <div class="phone-container">
-            <div class="phone-frame">
-              <div class="phone-screen">
-                <div class="app-simulation" id="heroAppSim">
-                  <!-- App Header -->
-                  <div class="sim-header">
-                    <div class="sim-status-bar">
-                      <span class="sim-time">14:23</span>
-                      <div class="sim-indicators">
-                        <i class="fas fa-signal"></i>
-                        <i class="fas fa-wifi"></i>
-                        <i class="fas fa-battery-full"></i>
-                      </div>
-                    </div>
-                    <div class="sim-app-header">
-                      <i class="fas fa-taxi"></i>
-                      <span>Cabra</span>
-                      <div class="sim-menu">
-                        <i class="fas fa-ellipsis-h"></i>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <!-- Map Simulation -->
-                  <div class="sim-map-container">
-                    <div class="sim-map">
-                      <div class="sim-route-line"></div>
-                      <div class="sim-marker sim-start">
-                        <i class="fas fa-map-marker-alt"></i>
-                      </div>
-                      <div class="sim-marker sim-end">
-                        <i class="fas fa-flag-checkered"></i>
-                      </div>
-                      <div class="sim-taxi">
-                        <i class="fas fa-taxi"></i>
-                      </div>
-                    </div>
-                    <div class="sim-overlay">
-                      <div class="sim-fare-display">
-                        <span class="sim-fare-amount">€12.50</span>
-                        <span class="sim-fare-label">Aktuelle Fahrt</span>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <!-- Controls -->
-                  <div class="sim-controls">
-                    <div class="sim-trip-info">
-                      <div class="sim-distance">
-                        <i class="fas fa-route"></i>
-                        <span>3.2 km</span>
-                      </div>
-                      <div class="sim-duration">
-                        <i class="fas fa-clock"></i>
-                        <span>8:32</span>
-                      </div>
-                    </div>
-                    <button class="sim-action-btn sim-running" id="heroSimBtn">
-                      <i class="fas fa-pause"></i>
-                      <span>Fahrt pausieren</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Feature Highlights Floating -->
-          <div class="floating-features">
-            <div class="feature-bubble" data-feature="gps">
-              <img src="assets/images/svgs/gps.svg" alt="GPS" width="24" height="24">
-              <span>GPS-Tracking</span>
-            </div>
-            <div class="feature-bubble" data-feature="receipt">
-              <img src="assets/images/svgs/receipt.svg" alt="Receipt" width="24" height="24">
-              <span>Digital Receipt</span>
-            </div>
-            <div class="feature-bubble" data-feature="earn">
-              <img src="assets/images/svgs/earn.svg" alt="Earn" width="24" height="24">
-              <span>Earn Tracking</span>
-            </div>
-          </div>
+        <div class="hero-card">
+          <img src="assets/images/svgs/gps.svg" alt="GPS Tracking" class="hero-icon">
+          <h3>GPS-Tracking</h3>
+          <p>Präzise Standortbestimmung</p>
+        </div>
+        <div class="hero-card">
+          <img src="assets/images/svgs/receipt.svg" alt="Digitale Quittungen" class="hero-icon">
+          <h3>Digitale Quittungen</h3>
+          <p>Professionelle Abrechnung</p>
+        </div>
+        <div class="hero-card">
+          <img src="assets/images/svgs/personal_data.svg" alt="Datenschutz" class="hero-icon">
+          <h3>Datenschutz</h3>
+          <p>Lokale Datenspeicherung</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Feature Showcase Sections -->
-  <section class="feature-showcase">
+  <!-- Features Section -->
+  <section class="features" id="features">
     <div class="container">
-      
-      <!-- GPS Tracking Feature -->
-      <div class="feature-section" id="gpsFeature">
-        <div class="feature-content">
-          <div class="feature-text">
-            <div class="feature-badge">GPS Tracking</div>
-            <h2>Präzise Standortbestimmung in Echtzeit</h2>
-            <p>Hochpräzise GPS-Verfolgung mit Zentimeter-Genauigkeit. Unsere fortschrittliche Technologie nutzt mehrere Satellitensysteme für die exakteste Positionsbestimmung.</p>
-            <div class="feature-stats">
-              <div class="stat-item">
-                <span class="stat-number">±2m</span>
-                <span class="stat-desc">Genauigkeit</span>
-              </div>
-              <div class="stat-item">
-                <span class="stat-number">1Hz</span>
-                <span class="stat-desc">Update Rate</span>
-              </div>
-              <div class="stat-item">
-                <span class="stat-number">5</span>
-                <span class="stat-desc">Satellitensysteme</span>
-              </div>
-            </div>
-          </div>
-          <div class="feature-demo">
-            <div class="demo-container">
-              <div class="gps-demo" id="gpsDemo">
-                <div class="map-grid">
-                  <div class="grid-lines"></div>
-                  <div class="satellite-signals">
-                    <div class="signal-wave"></div>
-                    <div class="signal-wave"></div>
-                    <div class="signal-wave"></div>
-                  </div>
-                  <div class="gps-indicator">
-                    <div class="gps-dot"></div>
-                    <div class="gps-ring"></div>
-                    <div class="gps-ring"></div>
-                  </div>
-                  <div class="coordinates-display">
-                    <span class="lat">52.5200° N</span>
-                    <span class="lng">13.4050° E</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div class="section-header">
+        <h2 class="section-title">Leistungsstarke Features</h2>
+        <p class="section-subtitle">Alles was Sie für professionelle Taxi-Abrechnung benötigen</p>
       </div>
-
-      <!-- Fare Calculator Feature -->
-      <div class="feature-section reverse" id="fareFeature">
-        <div class="feature-content">
-          <div class="feature-demo">
-            <div class="demo-container">
-              <div class="fare-demo" id="fareDemo">
-                <div class="calculator-display">
-                  <div class="calc-header">
-                    <h4>Fahrpreisberechnung</h4>
-                    <div class="calc-status active">AKTIV</div>
-                  </div>
-                  <div class="calc-metrics">
-                    <div class="metric">
-                      <span class="metric-label">Distanz</span>
-                      <span class="metric-value" id="fareDistance">0.0 km</span>
-                    </div>
-                    <div class="metric">
-                      <span class="metric-label">Zeit</span>
-                      <span class="metric-value" id="fareTime">00:00</span>
-                    </div>
-                    <div class="metric">
-                      <span class="metric-label">Grundpreis</span>
-                      <span class="metric-value">€3.50</span>
-                    </div>
-                  </div>
-                  <div class="fare-total">
-                    <span class="total-label">Gesamt</span>
-                    <span class="total-amount" id="fareTotal">€3.50</span>
-                  </div>
-                  <div class="calc-breakdown">
-                    <div class="breakdown-item">
-                      <span>Grundpreis</span>
-                      <span>€3.50</span>
-                    </div>
-                    <div class="breakdown-item">
-                      <span>Kilometer (€2.20/km)</span>
-                      <span id="kmCost">€0.00</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <img src="assets/images/svgs/gps.svg" alt="GPS Icon">
           </div>
-          <div class="feature-text">
-            <div class="feature-badge">Automatische Berechnung</div>
-            <h2>Intelligente Fahrpreisberechnung</h2>
-            <p>Automatische und präzise Berechnung basierend auf Entfernung, Zeit und konfigurierbaren Tarifen. Transparent und nachvollziehbar für Fahrer und Fahrgäste.</p>
-            <div class="feature-highlights">
-              <div class="highlight">
-                <i class="fas fa-calculator"></i>
-                <span>Automatische Berechnung</span>
-              </div>
-              <div class="highlight">
-                <i class="fas fa-cog"></i>
-                <span>Konfigurierbare Tarife</span>
-              </div>
-              <div class="highlight">
-                <i class="fas fa-receipt"></i>
-                <span>Transparente Abrechnung</span>
-              </div>
-            </div>
-          </div>
+          <h3 class="feature-title">GPS-Tracking</h3>
+          <p class="feature-description">Präzise Standortbestimmung und Routenverfolgung in Echtzeit für genaue Fahrpreisberechnung</p>
         </div>
-      </div>
-
-      <!-- Digital Receipts Feature -->
-      <div class="feature-section" id="receiptFeature">
-        <div class="feature-content">
-          <div class="feature-text">
-            <div class="feature-badge">Digital First</div>
-            <h2>Digitale Belege & QR-Codes</h2>
-            <p>Automatische Generierung digitaler Fahrbelege mit QR-Code Integration. Einfaches Teilen und Archivieren für Fahrer und Fahrgäste.</p>
-            <div class="feature-list">
-              <div class="list-item">
-                <i class="fas fa-qrcode"></i>
-                <span>QR-Code Integration</span>
-              </div>
-              <div class="list-item">
-                <i class="fas fa-share-alt"></i>
-                <span>Einfaches Teilen</span>
-              </div>
-              <div class="list-item">
-                <i class="fas fa-archive"></i>
-                <span>Automatische Archivierung</span>
-              </div>
-              <div class="list-item">
-                <i class="fas fa-download"></i>
-                <span>PDF & Text Export</span>
-              </div>
-            </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <img src="assets/images/svgs/receipt.svg" alt="Receipt Icon">
           </div>
-          <div class="feature-demo">
-            <div class="demo-container">
-              <div class="receipt-demo" id="receiptDemo">
-                <div class="receipt-preview">
-                  <div class="receipt-header">
-                    <i class="fas fa-taxi"></i>
-                    <span>Cabra</span>
-                    <span class="receipt-id">#12345678</span>
-                  </div>
-                  <div class="receipt-details">
-                    <div class="detail-row">
-                      <span>Datum</span>
-                      <span id="receiptDate">11.09.2024</span>
-                    </div>
-                    <div class="detail-row">
-                      <span>Von</span>
-                      <span>Hauptbahnhof</span>
-                    </div>
-                    <div class="detail-row">
-                      <span>Nach</span>
-                      <span>Flughafen</span>
-                    </div>
-                    <div class="detail-row">
-                      <span>Distanz</span>
-                      <span>12.3 km</span>
-                    </div>
-                    <div class="detail-row total">
-                      <span>Gesamt</span>
-                      <span>€24.50</span>
-                    </div>
-                  </div>
-                  <div class="receipt-qr">
-                    <div class="qr-code"></div>
-                    <span>QR-Code scannen</span>
-                  </div>
-                  <div class="receipt-actions">
-                    <button class="action-btn">
-                      <i class="fas fa-share"></i>
-                      Teilen
-                    </button>
-                    <button class="action-btn">
-                      <i class="fas fa-download"></i>
-                      Download
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <h3 class="feature-title">Digitale Quittungen</h3>
+          <p class="feature-description">Professionelle, automatisch generierte Quittungen für Ihre Fahrgäste mit allen wichtigen Details</p>
         </div>
-      </div>
-
-      <!-- Revenue Analytics Feature -->
-      <div class="feature-section reverse" id="analyticsFeature">
-        <div class="feature-content">
-          <div class="feature-demo">
-            <div class="demo-container">
-              <div class="analytics-demo" id="analyticsDemo">
-                <div class="dashboard">
-                  <div class="dashboard-header">
-                    <h4>Umsatz Dashboard</h4>
-                    <div class="period-selector">
-                      <span class="period active">Heute</span>
-                      <span class="period">Woche</span>
-                      <span class="period">Monat</span>
-                    </div>
-                  </div>
-                  <div class="kpi-grid">
-                    <div class="kpi-card">
-                      <div class="kpi-icon">
-                        <i class="fas fa-euro-sign"></i>
-                      </div>
-                      <div class="kpi-value" id="totalRevenue">€0</div>
-                      <div class="kpi-label">Gesamtumsatz</div>
-                    </div>
-                    <div class="kpi-card">
-                      <div class="kpi-icon">
-                        <i class="fas fa-route"></i>
-                      </div>
-                      <div class="kpi-value" id="totalTrips">0</div>
-                      <div class="kpi-label">Fahrten</div>
-                    </div>
-                    <div class="kpi-card">
-                      <div class="kpi-icon">
-                        <i class="fas fa-chart-line"></i>
-                      </div>
-                      <div class="kpi-value" id="avgFare">€0</div>
-                      <div class="kpi-label">⌀ Fahrtpreis</div>
-                    </div>
-                  </div>
-                  <div class="chart-container">
-                    <div class="chart-bars">
-                      <div class="bar" data-value="0"></div>
-                      <div class="bar" data-value="0"></div>
-                      <div class="bar" data-value="0"></div>
-                      <div class="bar" data-value="0"></div>
-                      <div class="bar" data-value="0"></div>
-                      <div class="bar" data-value="0"></div>
-                      <div class="bar" data-value="0"></div>
-                    </div>
-                    <div class="chart-labels">
-                      <span>Mo</span><span>Di</span><span>Mi</span><span>Do</span><span>Fr</span><span>Sa</span><span>So</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <img src="assets/images/svgs/personal_data.svg" alt="Privacy Icon">
           </div>
-          <div class="feature-text">
-            <div class="feature-badge">Business Intelligence</div>
-            <h2>Intelligente Umsatzanalyse</h2>
-            <p>Detaillierte Einblicke in Ihre Geschäftsdaten mit Echtzeit-Analytics. Verfolgen Sie Trends, optimieren Sie Routen und maximieren Sie Ihren Umsatz.</p>
-            <div class="analytics-features">
-              <div class="analytics-item">
-                <i class="fas fa-chart-bar"></i>
-                <div>
-                  <h4>Umsatz-Tracking</h4>
-                  <p>Echtzeit-Übersicht über Tages-, Wochen- und Monatsumsätze</p>
-                </div>
-              </div>
-              <div class="analytics-item">
-                <i class="fas fa-route"></i>
-                <div>
-                  <h4>Fahrt-Analyse</h4>
-                  <p>Detaillierte Aufschlüsselung aller Fahrten und Routen</p>
-                </div>
-              </div>
-              <div class="analytics-item">
-                <i class="fas fa-trophy"></i>
-                <div>
-                  <h4>Performance-Metriken</h4>
-                  <p>KPIs zur Optimierung Ihrer Taxi-Geschäftstätigkeit</p>
-                </div>
-              </div>
-            </div>
+          <h3 class="feature-title">Datenschutz</h3>
+          <p class="feature-description">Alle Daten werden sicher und nur lokal auf Ihrem Gerät gespeichert - keine Cloud-Übertragung</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <img src="assets/images/svgs/earn.svg" alt="Earnings Icon">
           </div>
+          <h3 class="feature-title">Einfache Bedienung</h3>
+          <p class="feature-description">Intuitive Benutzeroberfläche für schnelle und effiziente Fahrpreisberechnung</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <img src="assets/images/svgs/offline.svg" alt="Offline Icon">
+          </div>
+          <h3 class="feature-title">Offline-Funktion</h3>
+          <p class="feature-description">Funktioniert auch ohne Internetverbindung - perfekt für unterwegs</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-mobile-alt"></i>
+          </div>
+          <h3 class="feature-title">Multi-Platform</h3>
+          <p class="feature-description">Läuft auf allen modernen Geräten - Smartphone, Tablet oder Desktop</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Benefits Section -->
-  <section class="benefits" id="benefits">
+  <!-- About Section -->
+  <section class="about" id="about">
     <div class="container">
-      <div class="benefits-content">
-        <div class="benefits-text">
-          <h2>Warum Cabra Professional?</h2>
-          <div class="benefit-list">
-            <div class="benefit-item">
+      <div class="about-content">
+        <div class="about-text">
+          <h2 class="section-title">Über Cabra</h2>
+          <p class="about-description">
+            Cabra ist die moderne Lösung für professionelle Taxi-Fahrpreisberechnung. 
+            Entwickelt von Fachleuten für Fachleute, bietet unsere Anwendung präzise GPS-Tracking, 
+            transparente Abrechnung und vollständigen Datenschutz.
+          </p>
+          <div class="about-features">
+            <div class="about-feature">
               <i class="fas fa-check-circle"></i>
-              <div>
-                <h4>Zeitersparnis</h4>
-                <p>Automatisierte Berechnungen sparen wertvolle Zeit bei jeder Fahrt</p>
-              </div>
+              <span>100% lokale Datenspeicherung</span>
             </div>
-            <div class="benefit-item">
+            <div class="about-feature">
               <i class="fas fa-check-circle"></i>
-              <div>
-                <h4>Kosteneffizienz</h4>
-                <p>Reduzierung von Fehlern führt zu höherer Profitabilität</p>
-              </div>
+              <span>Präzise GPS-Verfolgung</span>
             </div>
-            <div class="benefit-item">
+            <div class="about-feature">
               <i class="fas fa-check-circle"></i>
-              <div>
-                <h4>Kundenzufriedenheit</h4>
-                <p>Transparente Abrechnung schafft Vertrauen bei Ihren Kunden</p>
-              </div>
+              <span>Professionelle Quittungen</span>
             </div>
-            <div class="benefit-item">
+            <div class="about-feature">
               <i class="fas fa-check-circle"></i>
-              <div>
-                <h4>Professionelles Image</h4>
-                <p>Moderne Technologie unterstreicht Ihre Professionalität</p>
-              </div>
+              <span>Einfache Bedienung</span>
             </div>
           </div>
+          <a href="app.html" class="btn btn-primary">
+            <i class="fas fa-play"></i>
+            Jetzt ausprobieren
+          </a>
         </div>
-        <div class="benefits-visual">
-          <div class="stats-dashboard">
-            <div class="stat-card">
-              <div class="stat-icon">
-                <i class="fas fa-chart-line"></i>
-              </div>
-              <div class="stat-info">
-                <span class="stat-value">+127%</span>
-                <span class="stat-desc">Effizienz</span>
-              </div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-icon">
-                <i class="fas fa-clock"></i>
-              </div>
-              <div class="stat-info">
-                <span class="stat-value">-85%</span>
-                <span class="stat-desc">Zeitaufwand</span>
-              </div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-icon">
-                <i class="fas fa-euro-sign"></i>
-              </div>
-              <div class="stat-info">
-                <span class="stat-value">+43%</span>
-                <span class="stat-desc">Umsatz</span>
-              </div>
-            </div>
-          </div>
+        <div class="about-visual">
+          <img src="assets/images/svgs/welcome.svg" alt="Welcome Illustration" class="about-image">
         </div>
       </div>
     </div>
   </section>
 
   <!-- CTA Section -->
-  <section class="cta" id="download">
+  <section class="cta">
     <div class="container">
       <div class="cta-content">
-        <h2>Bereit für die Zukunft des Taxi-Gewerbes?</h2>
-        <p>Starten Sie noch heute mit Cabra Professional und revolutionieren Sie Ihr Taxi-Unternehmen.</p>
-        <div class="cta-actions">
-          <a href="app.html" class="btn btn-primary btn-large">
-            <i class="fas fa-download"></i>
-            Kostenlos starten
-          </a>
-          <div class="download-info">
-            <span>✓ Sofort verfügbar</span>
-            <span>✓ Keine Installation nötig</span>
-            <span>✓ Kostenlos nutzbar</span>
-          </div>
-        </div>
+        <h2 class="cta-title">Bereit für professionelle Taxi-Abrechnung?</h2>
+  <p class="cta-subtitle">Starten Sie noch heute mit Cabra und erleben Sie die Zukunft der Taxi-Fahrpreisberechnung</p>
+        <a href="app.html" class="btn btn-primary btn-large">
+          <i class="fas fa-rocket"></i>
+          App jetzt starten
+        </a>
       </div>
     </div>
   </section>
@@ -568,496 +182,61 @@
     <div class="container">
       <div class="footer-content">
         <div class="footer-brand">
-          <div class="brand-logo">
-            <i class="fas fa-taxi"></i>
-            <span>Cabra</span>
-          </div>
-          <p>Die professionelle Lösung für moderne Taxi-Unternehmen.</p>
-          <div class="social-links">
-            <a href="#" aria-label="GitHub">
-              <i class="fab fa-github"></i>
-            </a>
-            <a href="#" aria-label="Twitter">
-              <i class="fab fa-twitter"></i>
-            </a>
-            <a href="#" aria-label="LinkedIn">
-              <i class="fab fa-linkedin"></i>
-            </a>
-          </div>
+          <img src="assets/images/icon-192.png" alt="Cabra Logo" class="footer-logo">
+          <h3>Cabra</h3>
+          <p>Professionelle Taxi-Fahrpreisberechnung</p>
         </div>
         <div class="footer-links">
-          <div class="link-group">
+          <div class="footer-column">
             <h4>Produkt</h4>
             <a href="#features">Features</a>
-            <a href="#benefits">Vorteile</a>
             <a href="app.html">App starten</a>
+            <a href="#about">Über uns</a>
           </div>
-          <div class="link-group">
+          <div class="footer-column">
             <h4>Support</h4>
-            <a href="#">Dokumentation</a>
-            <a href="#">FAQ</a>
-            <a href="#">Kontakt</a>
-          </div>
-          <div class="link-group">
-            <h4>Rechtliches</h4>
-            <a href="#">Datenschutz</a>
-            <a href="#">Impressum</a>
-            <a href="#">AGB</a>
+            <a href="#contact">Kontakt</a>
+            <a href="#help">Hilfe</a>
+            <a href="#privacy">Datenschutz</a>
           </div>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2024 Cabra Professional. Made with ❤️ by Talbergh. Alle Rechte vorbehalten.</p>
+  <p>&copy; 2025 Cabra. Alle Rechte vorbehalten.</p>
       </div>
     </div>
   </footer>
 
-  <!-- Scripts -->
   <script src="assets/javascripts/library/FontAwesome.min.js"></script>
-  <script type="module" src="assets/javascripts/interface/screens/Landing.js"></script>
   <script>
-    // Initialize GSAP and ScrollTrigger
-    gsap.registerPlugin(ScrollTrigger, TextPlugin);
+    // Mobile Navigation Toggle
+    document.querySelector('.mobile-menu-toggle').addEventListener('click', function() {
+      document.querySelector('.nav-links').classList.toggle('active');
+      this.classList.toggle('active');
+    });
 
-    // Mobile Menu Toggle
-    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-    const mobileMenu = document.getElementById('mobileMenu');
-    
-    if (mobileMenuBtn && mobileMenu) {
-      mobileMenuBtn.addEventListener('click', () => {
-        mobileMenu.classList.toggle('active');
-        const icon = mobileMenuBtn.querySelector('i');
-        icon.classList.toggle('fa-bars');
-        icon.classList.toggle('fa-times');
-      });
-    }
-
-    // Smooth scrolling for navigation links
+    // Smooth Scrolling
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function (e) {
         e.preventDefault();
         const target = document.querySelector(this.getAttribute('href'));
         if (target) {
-          gsap.to(window, {
-            duration: 1,
-            scrollTo: {y: target, offsetY: 80},
-            ease: "power2.inOut"
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
           });
-          // Close mobile menu if open
-          if (mobileMenu) {
-            mobileMenu.classList.remove('active');
-            const icon = mobileMenuBtn.querySelector('i');
-            icon.classList.add('fa-bars');
-            icon.classList.remove('fa-times');
-          }
         }
       });
     });
 
     // Navbar scroll effect
-    gsap.to('.navbar', {
-      scrollTrigger: {
-        trigger: '.hero',
-        start: 'bottom top',
-        toggleActions: 'play none none reverse'
-      },
-      className: '+=scrolled',
-      duration: 0.3
-    });
-
-    // Hero Animations
-    const heroTl = gsap.timeline();
-    
-    heroTl
-      .from('.hero-title', {
-        duration: 1,
-        y: 50,
-        opacity: 0,
-        ease: 'power3.out'
-      })
-      .from('.hero-description', {
-        duration: 0.8,
-        y: 30,
-        opacity: 0,
-        ease: 'power3.out'
-      }, '-=0.5')
-      .from('.hero-actions .btn', {
-        duration: 0.6,
-        y: 20,
-        opacity: 0,
-        stagger: 0.2,
-        ease: 'power3.out'
-      }, '-=0.3')
-      .from('.hero-stats .stat', {
-        duration: 0.8,
-        y: 20,
-        opacity: 0,
-        stagger: 0.1,
-        ease: 'power3.out'
-      }, '-=0.4')
-      .from('.phone-container', {
-        duration: 1.2,
-        scale: 0.8,
-        opacity: 0,
-        rotation: 10,
-        ease: 'power3.out'
-      }, '-=1')
-      .from('.feature-bubble', {
-        duration: 0.6,
-        scale: 0,
-        opacity: 0,
-        stagger: 0.2,
-        ease: 'back.out(1.7)'
-      }, '-=0.5');
-
-    // Hero App Simulation
-    function startHeroSimulation() {
-      const fareAmount = document.querySelector('.sim-fare-amount');
-      const distanceSpan = document.querySelector('.sim-distance span');
-      const durationSpan = document.querySelector('.sim-duration span');
-      const taxiElement = document.querySelector('.sim-taxi');
-      const routeLine = document.querySelector('.sim-route-line');
-      
-      let fare = 3.50;
-      let distance = 0;
-      let duration = 0;
-      
-      // Animate route line
-      gsap.fromTo(routeLine, {
-        width: '0%'
-      }, {
-        width: '100%',
-        duration: 8,
-        ease: 'power2.inOut',
-        repeat: -1,
-        yoyo: true
-      });
-      
-      // Animate taxi movement
-      gsap.to(taxiElement, {
-        motionPath: {
-          path: '.sim-route-line',
-          autoRotate: true,
-        },
-        duration: 8,
-        ease: 'power2.inOut',
-        repeat: -1,
-        yoyo: true
-      });
-      
-      // Update counter
-      const updateCounter = () => {
-        distance += 0.1;
-        duration += 1;
-        fare = 3.50 + (distance * 2.20);
-        
-        if (fareAmount) fareAmount.textContent = `€${fare.toFixed(2)}`;
-        if (distanceSpan) distanceSpan.textContent = `${distance.toFixed(1)} km`;
-        if (durationSpan) {
-          const minutes = Math.floor(duration / 60);
-          const seconds = duration % 60;
-          durationSpan.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-        }
-      };
-      
-      setInterval(updateCounter, 1000);
-    }
-
-    // Feature Simulations
-    function initGPSDemo() {
-      const gpsDemo = document.getElementById('gpsDemo');
-      if (!gpsDemo) return;
-      
-      // Animate GPS signals
-      gsap.to('.signal-wave', {
-        scale: 2,
-        opacity: 0,
-        duration: 2,
-        stagger: 0.5,
-        repeat: -1,
-        ease: 'power2.out'
-      });
-      
-      // Animate GPS rings
-      gsap.to('.gps-ring', {
-        scale: 3,
-        opacity: 0,
-        duration: 2,
-        stagger: 0.3,
-        repeat: -1,
-        ease: 'power2.out'
-      });
-      
-      // Update coordinates
-      let lat = 52.5200;
-      let lng = 13.4050;
-      
-      setInterval(() => {
-        lat += (Math.random() - 0.5) * 0.0001;
-        lng += (Math.random() - 0.5) * 0.0001;
-        
-        const latSpan = document.querySelector('.lat');
-        const lngSpan = document.querySelector('.lng');
-        
-        if (latSpan) latSpan.textContent = `${lat.toFixed(4)}° N`;
-        if (lngSpan) lngSpan.textContent = `${lng.toFixed(4)}° E`;
-      }, 1000);
-    }
-
-    function initFareDemo() {
-      const fareDemo = document.getElementById('fareDemo');
-      if (!fareDemo) return;
-      
-      let distance = 0;
-      let time = 0;
-      let fare = 3.50;
-      
-      const updateFare = () => {
-        distance += 0.1;
-        time += 2;
-        fare = 3.50 + (distance * 2.20);
-        
-        const distanceEl = document.getElementById('fareDistance');
-        const timeEl = document.getElementById('fareTime');
-        const totalEl = document.getElementById('fareTotal');
-        const kmCostEl = document.getElementById('kmCost');
-        
-        if (distanceEl) distanceEl.textContent = `${distance.toFixed(1)} km`;
-        if (timeEl) {
-          const minutes = Math.floor(time / 60);
-          const seconds = time % 60;
-          timeEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        }
-        if (totalEl) totalEl.textContent = `€${fare.toFixed(2)}`;
-        if (kmCostEl) kmCostEl.textContent = `€${(distance * 2.20).toFixed(2)}`;
-      };
-      
-      setInterval(updateFare, 2000);
-    }
-
-    function initReceiptDemo() {
-      const receiptDemo = document.getElementById('receiptDemo');
-      if (!receiptDemo) return;
-      
-      // Generate QR code pattern
-      const qrCode = document.querySelector('.qr-code');
-      if (qrCode) {
-        let pattern = '';
-        for (let i = 0; i < 100; i++) {
-          pattern += Math.random() > 0.5 ? '█' : '░';
-          if ((i + 1) % 10 === 0) pattern += '\n';
-        }
-        qrCode.textContent = pattern;
-        qrCode.style.fontFamily = 'monospace';
-        qrCode.style.fontSize = '8px';
-        qrCode.style.lineHeight = '8px';
+    window.addEventListener('scroll', function() {
+      const navbar = document.querySelector('.navbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
       }
-      
-      // Animate receipt actions
-      const actionBtns = document.querySelectorAll('.action-btn');
-      actionBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-          gsap.to(btn, {
-            scale: 0.95,
-            duration: 0.1,
-            yoyo: true,
-            repeat: 1
-          });
-        });
-      });
-    }
-
-    function initAnalyticsDemo() {
-      const analyticsDemo = document.getElementById('analyticsDemo');
-      if (!analyticsDemo) return;
-      
-      let revenue = 0;
-      let trips = 0;
-      
-      const updateKPIs = () => {
-        trips += Math.floor(Math.random() * 3) + 1;
-        const tripRevenue = Math.random() * 30 + 10;
-        revenue += tripRevenue;
-        
-        const totalRevenueEl = document.getElementById('totalRevenue');
-        const totalTripsEl = document.getElementById('totalTrips');
-        const avgFareEl = document.getElementById('avgFare');
-        
-        if (totalRevenueEl) {
-          gsap.to({value: parseFloat(totalRevenueEl.textContent.replace('€', ''))}, {
-            value: revenue,
-            duration: 1,
-            onUpdate: function() {
-              totalRevenueEl.textContent = `€${this.targets()[0].value.toFixed(0)}`;
-            }
-          });
-        }
-        
-        if (totalTripsEl) {
-          gsap.to({value: parseInt(totalTripsEl.textContent)}, {
-            value: trips,
-            duration: 1,
-            onUpdate: function() {
-              totalTripsEl.textContent = Math.round(this.targets()[0].value);
-            }
-          });
-        }
-        
-        if (avgFareEl) {
-          const avg = revenue / trips;
-          gsap.to({value: parseFloat(avgFareEl.textContent.replace('€', ''))}, {
-            value: avg,
-            duration: 1,
-            onUpdate: function() {
-              avgFareEl.textContent = `€${this.targets()[0].value.toFixed(2)}`;
-            }
-          });
-        }
-        
-        // Update chart bars
-        const bars = document.querySelectorAll('.bar');
-        bars.forEach((bar, index) => {
-          const value = Math.random() * 100;
-          bar.setAttribute('data-value', value);
-          gsap.to(bar, {
-            height: `${value}%`,
-            duration: 1,
-            ease: 'power2.out',
-            delay: index * 0.1
-          });
-        });
-      };
-      
-      setInterval(updateKPIs, 5000);
-      updateKPIs(); // Initial call
-    }
-
-    // Feature Section Animations
-    gsap.utils.toArray('.feature-section').forEach((section, index) => {
-      const isReverse = section.classList.contains('reverse');
-      
-      gsap.from(section.querySelector('.feature-text'), {
-        scrollTrigger: {
-          trigger: section,
-          start: 'top 80%',
-          end: 'bottom 20%',
-          toggleActions: 'play none none reverse'
-        },
-        x: isReverse ? 50 : -50,
-        opacity: 0,
-        duration: 1,
-        ease: 'power3.out'
-      });
-      
-      gsap.from(section.querySelector('.feature-demo'), {
-        scrollTrigger: {
-          trigger: section,
-          start: 'top 80%',
-          end: 'bottom 20%',
-          toggleActions: 'play none none reverse'
-        },
-        x: isReverse ? -50 : 50,
-        opacity: 0,
-        duration: 1,
-        ease: 'power3.out',
-        delay: 0.2
-      });
-    });
-
-    // Initialize all demos when page loads
-    window.addEventListener('load', () => {
-      startHeroSimulation();
-      initGPSDemo();
-      initFareDemo();
-      initReceiptDemo();
-      initAnalyticsDemo();
-    });
-
-    // Benefits section animation
-    gsap.from('.benefit-item', {
-      scrollTrigger: {
-        trigger: '.benefits',
-        start: 'top 80%'
-      },
-      x: -30,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.2,
-      ease: 'power3.out'
-    });
-
-    // Stats animation
-    gsap.from('.stat-card', {
-      scrollTrigger: {
-        trigger: '.benefits-visual',
-        start: 'top 80%'
-      },
-      y: 30,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.15,
-      ease: 'power3.out'
-    });
-
-    // CTA section animation
-    gsap.from('.cta-content > *', {
-      scrollTrigger: {
-        trigger: '.cta',
-        start: 'top 80%'
-      },
-      y: 30,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.2,
-      ease: 'power3.out'
-    });
-
-    // Floating elements continuous animation
-    gsap.to('.feature-bubble', {
-      y: -10,
-      duration: 2,
-      ease: 'power2.inOut',
-      yoyo: true,
-      repeat: -1,
-      stagger: 0.3
-    });
-
-    // Interactive floating bubbles
-    document.querySelectorAll('.feature-bubble').forEach(bubble => {
-      bubble.addEventListener('mouseenter', () => {
-        gsap.to(bubble, {
-          scale: 1.1,
-          duration: 0.3,
-          ease: 'back.out(1.7)'
-        });
-      });
-      
-      bubble.addEventListener('mouseleave', () => {
-        gsap.to(bubble, {
-          scale: 1,
-          duration: 0.3,
-          ease: 'power2.out'
-        });
-      });
-    });
-
-    // Enhanced button hover effects
-    document.querySelectorAll('.btn').forEach(btn => {
-      btn.addEventListener('mouseenter', () => {
-        gsap.to(btn, {
-          scale: 1.05,
-          duration: 0.3,
-          ease: 'power2.out'
-        });
-      });
-      
-      btn.addEventListener('mouseleave', () => {
-        gsap.to(btn, {
-          scale: 1,
-          duration: 0.3,
-          ease: 'power2.out'
-        });
-      });
     });
   </script>
 </body>

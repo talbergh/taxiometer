@@ -1,5 +1,5 @@
 // Service Worker for Cabra PWA
-const CACHE_NAME = 'cabra-v3';
+const CACHE_NAME = 'cabra-v4';
 const ASSETS = [
   // Core pages
   'app.html',
@@ -8,7 +8,7 @@ const ASSETS = [
   'manifest.json',
   
   // Styles
-  "assets/stylesheets/App.css",
+  "assets/stylesheets/app.css",
   "assets/stylesheets/Landing.css",
   
   // App modules (ESM)
